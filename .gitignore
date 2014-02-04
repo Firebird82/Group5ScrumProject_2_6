@@ -2,11 +2,15 @@
 ## Eclipse
 #################
 
+Group5ScrumProject/Web.config
+Group5ScrumProject/DataClasses1.dbml
+Group5ScrumProject/DataClasses1.dbml.layout
+Group5ScrumProject/DataClasses1.designer.cs
+
 Web.config
 DataClasses1.dbml
 DataClasses1.dbml.layout
 DataClasses1.designer.cs
-
 
 *.pydevproject
 .project
