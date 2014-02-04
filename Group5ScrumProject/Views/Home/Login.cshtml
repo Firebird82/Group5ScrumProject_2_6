@@ -1,0 +1,3 @@
+﻿@{
+    @(Session["User"] == null ? @Html.Partial("_Login") : @Html.Partial("_Logout"))
+}

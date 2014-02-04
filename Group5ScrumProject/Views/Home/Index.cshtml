@@ -1,0 +1,18 @@
+﻿@using Group5ScrumProject
+
+@{
+    ViewBag.Title = "Main";
+}
+Välkommen @ViewBag.User.sUserName - @ViewBag.User.sUserRole
+
+@foreach (var r in ViewBag.Rooms)
+{
+    <p>
+        Rumnamn: @r.sRoomName
+        <br />
+        Antal platser:  @r.iRoomChairs
+    </p>
+    
+    
+}
+

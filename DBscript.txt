@@ -1,0 +1,114 @@
+USE [ProjectRooms]
+GO
+
+/****** Object:  Table [dbo].[tbUser]    Script Date: 2014-01-30 14:37:17 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tbUser](
+	[iUserId] [int] IDENTITY(1,1) NOT NULL,
+	[sUserName] [nvarchar](max) NOT NULL,
+	[sUserLoginName] [nvarchar](50) NOT NULL,
+	[sUserPassword] [nvarchar](50) NOT NULL,
+	[sUserRole] [nvarchar](50) NOT NULL,
+ CONSTRAINT [PK_tbUser] PRIMARY KEY CLUSTERED 
+(
+	[iUserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+USE [ProjectRooms]
+GO
+
+/****** Object:  Table [dbo].[tbRoom]    Script Date: 2014-01-30 14:56:08 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[tbRoom](
+	[iRoomId] [int] IDENTITY(1,1) NOT NULL,
+	[sRoomName] [nvarchar](50) NOT NULL,
+	[iRoomChairs] [int] NOT NULL,
+ CONSTRAINT [PK_tbRoom] PRIMARY KEY CLUSTERED 
+(
+	[iRoomId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+
+USE [ProjectRooms]
+GO
+SET IDENTITY_INSERT [dbo].[tbUser] ON 
+
+INSERT [dbo].[tbUser] ([iUserId], [sUserName], [sUserLoginName], [sUserPassword], [sUserRole]) VALUES (1, N'Gun', N'Gun', N'123', N'Admin')
+INSERT [dbo].[tbUser] ([iUserId], [sUserName], [sUserLoginName], [sUserPassword], [sUserRole]) VALUES (2, N'user', N'user', N'user', N'User')
+INSERT [dbo].[tbUser] ([iUserId], [sUserName], [sUserLoginName], [sUserPassword], [sUserRole]) VALUES (3, N'techer', N'teacher', N'teacher', N'Teacher')
+SET IDENTITY_INSERT [dbo].[tbUser] OFF
+
+USE [ProjectRooms]
+GO
+
+INSERT INTO [dbo].[tbRoom]
+           ([sRoomName]
+           ,[iRoomChairs])
+     VALUES
+           ('Projektrum1'
+           ,4)
+GO
+
+
+INSERT INTO [dbo].[tbRoom]
+           ([sRoomName]
+           ,[iRoomChairs])
+     VALUES
+           ('Projektrum2'
+           ,6)
+GO
+
+
+INSERT INTO [dbo].[tbRoom]
+           ([sRoomName]
+           ,[iRoomChairs])
+     VALUES
+           ('Projektrum3'
+           ,9)
+GO
+
+
+INSERT INTO [dbo].[tbRoom]
+           ([sRoomName]
+           ,[iRoomChairs])
+     VALUES
+           ('Projektrum4'
+           ,6)
+GO
+
+
+INSERT INTO [dbo].[tbRoom]
+           ([sRoomName]
+           ,[iRoomChairs])
+     VALUES
+           ('Projektrum5'
+           ,8)
+GO
+
+
+INSERT INTO [dbo].[tbRoom]
+           ([sRoomName]
+           ,[iRoomChairs])
+     VALUES
+           ('Projektrum6'
+           ,6)
+GO
+
+
+
