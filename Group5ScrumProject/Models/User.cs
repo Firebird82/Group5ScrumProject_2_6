@@ -16,6 +16,15 @@ namespace Group5ScrumProject
             sUserLoginName = _sUserLoginName;
         }
 
+        public User(tbUser _user)
+        {
+            sUserName = _user.sUserName;
+            iUserID = _user.iUserId;
+            sUserPassWord = _user.sUserPassword;
+            sUserRole = _user.sUserRole;
+            sUserLoginName = _user.sUserLoginName;
+        }
+
         public int iUserID { get; set; }
         public string  sUserName { get; set; }
         public string  sUserPassWord { get; set; }
