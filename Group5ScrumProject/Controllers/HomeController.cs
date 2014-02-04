@@ -12,11 +12,17 @@ namespace Group5ScrumProject.Controllers
 
         public ActionResult Index()
         {
+            if (Session["User"] == null)
+            {
+                return View("Login");
+            }
+
             var allRooms = db.tbRooms;
             ViewBag.Rooms = allRooms;
             ViewBag.User = Session["User"];
             return View();
         }
+
         public ActionResult Login(string tbxName, string tbxPassword)
         {
             //Om någon försöker komma in till loginsidan när dom är inloggade så loggas dom ut
@@ -25,6 +31,7 @@ namespace Group5ScrumProject.Controllers
                 Session.Clear();
                 return View();
             }
+
             //Kollar användarnamn och lösenord mot databasen
             tbUser loggedInUser = (from f in db.tbUsers
                                    where f.sUserLoginName == tbxName && f.sUserPassword == tbxPassword
@@ -44,57 +51,67 @@ namespace Group5ScrumProject.Controllers
             return View();
 
         }
+
         public ActionResult Logout()
         {
             Session.Clear();
             ViewBag.User = null;
             return View("index");
         }
+
         public ActionResult AdminViewSettings()
         {
-        return View();
+            return View();
         }
+
         public ActionResult AdminUserAdd()
         {
             return View();
         }
+
         public ActionResult AdminUserEdit()
         {
             return View();
         }
+
         public ActionResult AdminUserDelete()
         {
             return View();
         }
+
         public ActionResult AdminUserBlock()
         {
             return View();
         }
+
         public ActionResult AdminRoomAdd()
         {
             return View();
         }
+
         public ActionResult AdminRoomEdit()
         {
             return View();
         }
+
         public ActionResult AdminRoomDelete()
         {
             return View();
         }
+
         public ActionResult AdminBookingAdd()
         {
             return View();
         }
+
         public ActionResult AdminBookingEdit()
         {
             return View();
         }
+
         public ActionResult AdminBookingDelete()
         {
             return View();
         }
-
-
     }
 }

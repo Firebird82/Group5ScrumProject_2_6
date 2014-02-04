@@ -1,12 +1,16 @@
 ﻿@using Group5ScrumProject
 
-@{
-    ViewBag.Title = "Main";
-}
+@if (ViewBag.User == null)
+	{
+        Html.RenderAction("Login");
+	}
 Välkommen @ViewBag.User.sUserName - @ViewBag.User.sUserRole
 
-          @Html.ActionLink("Admin Settings", "AdminViewSettings") 
-
+@if (ViewBag.User.sUserRole == "Admin")
+{
+    <br />
+    <a href="AdminViewSettings"> <input id="btnAdmin" type="button" value="Admin inställningar" /></a>
+}  
 
 @foreach (var r in ViewBag.Rooms)
 {
@@ -15,7 +19,5 @@ Välkommen @ViewBag.User.sUserName - @ViewBag.User.sUserRole
         <br />
         Antal platser:  @r.iRoomChairs
     </p>
-    
-
 }
 
