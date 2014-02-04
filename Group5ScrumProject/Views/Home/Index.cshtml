@@ -1,12 +1,15 @@
 ﻿@using Group5ScrumProject
+@{
+    User user = new User((tbUser)ViewBag.User);
+}
 
 @if (ViewBag.User == null)
 	{
         Html.RenderAction("Login");
 	}
-Välkommen @ViewBag.User.sUserName - @ViewBag.User.sUserRole
+Välkommen @user.sUserName - @user.sUserRole
 
-@if (ViewBag.User.sUserRole == "Admin")
+@if (user.sUserRole == "Admin")
 {
     <br />
     <a href="AdminViewSettings"> <input id="btnAdmin" type="button" value="Admin inställningar" /></a>

@@ -34,8 +34,8 @@ namespace Group5ScrumProject.Controllers
 
             //Kollar användarnamn och lösenord mot databasen
             tbUser loggedInUser = (from f in db.tbUsers
-                                   where f.sUserLoginName == tbxName && f.sUserPassword == tbxPassword
-                                   select f).FirstOrDefault();
+                        where f.sUserLoginName == tbxName && f.sUserPassword == tbxPassword
+                        select f).FirstOrDefault();
 
             //Om det finns en befintlig användare i databasen
             if (loggedInUser != null)
