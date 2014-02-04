@@ -35,6 +35,7 @@ namespace Group5ScrumProject.Controllers
             {
                 Session["User"] = loggedInUser;
                 return RedirectToAction("Index");
+
             }
 
             //Om användaren inte fyller i alla fält
@@ -49,5 +50,51 @@ namespace Group5ScrumProject.Controllers
             ViewBag.User = null;
             return View("index");
         }
+        public ActionResult AdminViewSettings()
+        {
+        return View();
+        }
+        public ActionResult AdminUserAdd()
+        {
+            return View();
+        }
+        public ActionResult AdminUserEdit()
+        {
+            return View();
+        }
+        public ActionResult AdminUserDelete()
+        {
+            return View();
+        }
+        public ActionResult AdminUserBlock()
+        {
+            return View();
+        }
+        public ActionResult AdminRoomAdd()
+        {
+            return View();
+        }
+        public ActionResult AdminRoomEdit()
+        {
+            return View();
+        }
+        public ActionResult AdminRoomDelete()
+        {
+            return View();
+        }
+        public ActionResult AdminBookingAdd()
+        {
+            return View();
+        }
+        public ActionResult AdminBookingEdit()
+        {
+            return View();
+        }
+        public ActionResult AdminBookingDelete()
+        {
+            return View();
+        }
+
+
     }
 }

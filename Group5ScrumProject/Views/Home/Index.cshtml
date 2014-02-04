@@ -5,6 +5,9 @@
 }
 Välkommen @ViewBag.User.sUserName - @ViewBag.User.sUserRole
 
+          @Html.ActionLink("Admin Settings", "AdminViewSettings") 
+
+
 @foreach (var r in ViewBag.Rooms)
 {
     <p>
@@ -13,6 +16,6 @@ Välkommen @ViewBag.User.sUserName - @ViewBag.User.sUserRole
         Antal platser:  @r.iRoomChairs
     </p>
     
-    
+
 }
 

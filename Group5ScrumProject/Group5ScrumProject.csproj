@@ -305,6 +305,17 @@
     <Content Include="Views\Home\_Login.cshtml" />
     <Content Include="Views\Home\_Logout.cshtml" />
     <Content Include="Views\Home\AdminUserEdit.cshtml" />
+    <Content Include="Views\Home\AdminViewSettings.cshtml" />
+    <Content Include="Views\Home\AdminRoomEdit.cshtml" />
+    <Content Include="Views\Home\AdminRoomDelete.cshtml" />
+    <Content Include="Views\Home\AdminRoomAdd.cshtml" />
+    <Content Include="Views\Home\AdminUserAdd.cshtml" />
+    <Content Include="Views\Home\AdminUserDelete.cshtml" />
+    <Content Include="Views\Home\AdminUserBlock.cshtml" />
+    <Content Include="Views\Home\AdminBookingAdd.cshtml" />
+    <Content Include="Views\Home\AdminBookDelete.cshtml" />
+    <Content Include="Views\Home\AdminBookingEdit.cshtml" />
+    <Content Include="Views\Home\AdminBookingDelete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
