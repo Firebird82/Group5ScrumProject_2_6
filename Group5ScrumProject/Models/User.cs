@@ -6,7 +6,7 @@ using System.Web.DynamicData;
 
 namespace Group5ScrumProject
 {
-    public class User 
+    public class User
     {
         DataClasses1DataContext db = new DataClasses1DataContext();
         public User(tbUser _user)
@@ -22,8 +22,8 @@ namespace Group5ScrumProject
         }
 
         public int iUserID { get; set; }
-        public string  sUserName { get; set; }
-        public string  sUserPassWord { get; set; }
+        public string sUserName { get; set; }
+        public string sUserPassWord { get; set; }
         public int iUserRole { get; set; }
         public string sUserRole { get; set; }
         public string sUserLoginName { get; set; }

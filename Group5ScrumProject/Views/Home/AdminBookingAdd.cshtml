@@ -3,3 +3,21 @@
 }
 
 <h2>AdminBookingAdd</h2>
+
+<div id="addBooking">
+    @using (Html.BeginForm())
+    { 
+        <p>Rum:</p>
+        @Html.DropDownList("ddlRooms")
+        <p>Dag:</p>
+        <input data-val="true" name="day" type="date" />
+        <p>
+            Starttid:
+            @Html.DropDownList("ddlTimeStart")
+            Sluttid:
+            @Html.DropDownList("ddlTimeEnd")
+        </p>
+        <input type="submit" value="Boka valt rum" />  
+    }
+
+</div>
