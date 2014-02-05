@@ -198,42 +198,40 @@ namespace Group5ScrumProject.Controllers
             return View();
         }
 
-        public ActionResult UploadFile(string Submit)
+        public ActionResult UploadFile(string Submit) //David
         {
-
+            // Loopen is only used onces but will be good later when we can upload multiple files
             foreach (string upload in Request.Files)
             {
-                string path = AppDomain.CurrentDomain.BaseDirectory + "uploads/";
-                string filename = Path.GetFileName(Request.Files[upload].FileName);
-                Request.Files[upload].SaveAs(Path.Combine(path, filename));
+                string path = AppDomain.CurrentDomain.BaseDirectory + "uploads/";       //Sets a path to save the uploaded file to a directory on the server
+                string filename = Path.GetFileName(Request.Files[upload].FileName);     //Gets the name of the uploaded file
+                Request.Files[upload].SaveAs(Path.Combine(path, filename));             //Saves the uploaded file to path folder
 
-                System.Text.Encoding enc = System.Text.Encoding.Default;
-                StreamReader sr = new StreamReader(path + filename, enc);
+                System.Text.Encoding enc = System.Text.Encoding.Default;                //Sets the Encoding of the file to make special characters like åäö "possible"
+                StreamReader sr = new StreamReader(path + filename, enc);               //Instanciates a streamReader that wil read the file line by line
 
-                string strline = "";
-                string[] _values = null;
-                while (!sr.EndOfStream)
+                string strline = "";                                //Will store each line found in the file
+                string[] _values = null;                            //Will store each entry that is "," separated in the list
+                while (!sr.EndOfStream)                             //While we have more lines in the file we will keep going troung the next line untill there are no more lines in the file
                 {
-                    strline = sr.ReadLine();
-                    _values = strline.Split(',');
+                    strline = sr.ReadLine();                        //Gets the first line in the file with StreamReader
+                    _values = strline.Split(',');                   //Separates the line on "," in to a list
 
-
-                    tbUser user = new tbUser();
+                    tbUser user = new tbUser();                     //A tbUser database object is created to store what we have in the file 
                     {
-                        user.sUserName = _values[0];
-                        user.sUserLoginName = _values[1];
-                        user.sUserPassword = _values[2];
-                        user.iUserRole = 1;
-                        user.iBlocked = 0;
-                        user.iActivBooking = 0;
-                        user.sClass = _values[3];
+                        user.sUserName = _values[0];                //Name is the first entry in the file on each line
+                        user.sUserLoginName = _values[1];           //Login name is in second place in the file
+                        user.sUserPassword = _values[2];            //Password in 3rd place
+                        user.iUserRole = 1;                         //Standard value to make all added users "User" in the database
+                        user.iBlocked = 0;                          //Standard value so that the user is not blocked from start
+                        user.iActivBooking = 0;                     //Standard value that the user dont have any bookings to start with
+                        user.sClass = _values[3];                   //4th place in the file is info about what class the user goes in
                     };
                     
-                    db.tbUsers.InsertOnSubmit(user);
-                    db.SubmitChanges();
+                    db.tbUsers.InsertOnSubmit(user);                //Save to database
+                    db.SubmitChanges();                             //Save to database
                 }
-                sr.Close();
-
+                sr.Close();                                         //Close StreamReader
             }
 
             return View();
