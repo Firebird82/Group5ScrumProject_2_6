@@ -69,7 +69,7 @@ namespace Group5ScrumProject.Controllers
        
         public ActionResult AdminUserAdd()
         {
-          //  ViewBag.Genre = new SelectList(db.Genres, "GenreId", "GenreName");
+            ViewBag.Role = new SelectList(db.tbRoles, "iRoleID", "sRoleType");
             return View();
         }
         [HttpPost]

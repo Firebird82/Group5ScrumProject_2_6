@@ -1,4 +1,5 @@
-﻿@using Group5ScrumProject.Models
+﻿@using System.Web.UI.WebControls
+@using Group5ScrumProject.Models
 @model Group5ScrumProject.Models.tbUser
 
 
@@ -14,25 +15,25 @@
 
     <fieldset>
         <legend>Ny användare</legend>
-
+         <div class="editor-label">
+            @Html.LabelFor(model => model.sUserName, "Namn")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.sUserName)
+            @Html.ValidationMessageFor(model => model.sUserName)
+        </div>
         <div class="editor-label">
-            @Html.LabelFor(model => model.sUserLoginName)
+            @Html.LabelFor(model => model.sUserLoginName, "Användarnamn")
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.sUserLoginName)
             @Html.ValidationMessageFor(model => model.sUserLoginName)
         </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.sUserName)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.sUserName)
-            @Html.ValidationMessageFor(model => model.sUserName)
-        </div>
+       
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.sUserPassword)
+            @Html.LabelFor(model => model.sUserPassword, "Lösenord")
         </div>
         <div class="editor-field">
           
@@ -40,7 +41,7 @@
             @Html.ValidationMessageFor(model => model.sUserPassword)
         </div>
           <div class="editor-label">
-            @Html.LabelFor(model => model.sClass)
+            @Html.LabelFor(model => model.sClass, "Klass")
         </div>
         <div class="editor-field">
           
@@ -48,11 +49,11 @@
             @Html.ValidationMessageFor(model => model.sClass)
         </div>
             <div class="editor-label">
-            @Html.LabelFor(model => model.iUserRole)
+            @Html.LabelFor(model => model.iUserRole, "Rättigheter")
         </div>
         <div class="editor-field">
           
-          @Html.EditorFor(model => model.iUserRole)
+    @Html.DropDownList("Role")
             @Html.ValidationMessageFor(model => model.iUserRole)
         </div>
          
