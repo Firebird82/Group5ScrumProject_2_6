@@ -9,15 +9,17 @@ namespace Group5ScrumProject.Models
     {
         DataClasses1DataContext db = new DataClasses1DataContext();
 
-        public Room(int id)
+        public Room(tbRoom room)
         {
-            RoomId = id;
-            RoomName = db.tbRooms
-                .Where(i => i.iRoomId == RoomId)
-                .FirstOrDefault().sRoomName;
+            RoomId = room.iRoomId;
+            RoomName = room.sRoomName;
+            Chairs = room.iRoomChairs;
+            RoomDescription = room.sRoomDesc;
         }
 
         public int RoomId { get; set; }
         public string RoomName { get; set; }
+        public int Chairs { get; set; }
+        public string RoomDescription { get; set; }
     }
 }
