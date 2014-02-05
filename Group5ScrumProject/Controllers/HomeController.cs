@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
 using Group5ScrumProject.Models;
-
+using System.IO;
 
 namespace Group5ScrumProject.Controllers
 {
@@ -132,6 +132,47 @@ namespace Group5ScrumProject.Controllers
 
         public ActionResult AdminBookingDelete()
         {
+            return View();
+        }
+
+        public ActionResult UploadFile(string Submit)
+        {
+
+            foreach (string upload in Request.Files)
+            {
+                string path = AppDomain.CurrentDomain.BaseDirectory + "uploads/";
+                string filename = Path.GetFileName(Request.Files[upload].FileName);
+                Request.Files[upload].SaveAs(Path.Combine(path, filename));
+
+                System.Text.Encoding enc = System.Text.Encoding.Default;
+                StreamReader sr = new StreamReader(path + filename, enc);
+
+                string strline = "";
+                string[] _values = null;
+                while (!sr.EndOfStream)
+                {
+                    strline = sr.ReadLine();
+                    _values = strline.Split(',');
+
+
+                    tbUser user = new tbUser();
+                    {
+                        user.sUserName = _values[0];
+                        user.sUserLoginName = _values[1];
+                        user.sUserPassword = _values[2];
+                        user.iUserRole = 1;
+                        user.iBlocked = 0;
+                        user.iActivBooking = 0;
+                        user.sClass = _values[3];
+                    };
+                    
+                    db.tbUsers.InsertOnSubmit(user);
+                    db.SubmitChanges();
+                }
+                sr.Close();
+
+            }
+
             return View();
         }
     }
