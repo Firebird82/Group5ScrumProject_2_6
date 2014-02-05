@@ -1,5 +1,72 @@
-﻿@{
-    ViewBag.Title = "AdminUserAdd";
+﻿
+@using Group5ScrumProject.Models
+@model Group5ScrumProject.Models.tbUser
+
+
+@{
+    ViewBag.Title = "Lägg till användare";
 }
 
-<h2>AdminUserAdd</h2>
+<h2>Lägg till ny användare</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Ny användare</legend>
+         <div>
+            @Html.LabelFor(model => model.sUserName, "Namn")
+        </div>
+        <div>
+            @Html.EditorFor(model => model.sUserName)
+            @Html.ValidationMessageFor(model => model.sUserName)
+        </div>
+        <div>
+            @Html.LabelFor(model => model.sUserLoginName, "Användarnamn")
+        </div>
+        <div>
+            @Html.EditorFor(model => model.sUserLoginName)
+            @Html.ValidationMessageFor(model => model.sUserLoginName)
+        </div>
+
+       
+
+        <div>
+            @Html.LabelFor(model => model.sUserPassword, "Lösenord")
+        </div>
+        <div>
+          
+            @Html.EditorFor(model => model.sUserPassword)
+            @Html.ValidationMessageFor(model => model.sUserPassword)
+        </div>
+           <div>
+            @Html.LabelFor(model => model.iUserRole, "Rättigheter")
+        </div>
+        <div>
+          
+            @Html.DropDownList("iUserRole")
+         
+            @Html.ValidationMessageFor(model => model.iUserRole)
+        </div>
+          <div>
+            @Html.LabelFor(model => model.sClass, "Klass")
+        </div>
+        <div>
+          
+            @Html.EditorFor(model => model.sClass)
+            @Html.ValidationMessageFor(model => model.sClass)
+        </div>
+         
+         
+       
+        <p>
+            <input type="submit" value="Lägg till" />
+        </p>
+    </fieldset>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

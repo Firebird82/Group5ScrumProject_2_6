@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Web.Mvc;
+using Group5ScrumProject.Models;
+
 
 
 namespace Group5ScrumProject.Controllers
@@ -11,7 +14,7 @@ namespace Group5ScrumProject.Controllers
     public class HomeController : Controller
     {
         DataClasses1DataContext db = new DataClasses1DataContext();
-
+       
         public ActionResult Index()
         {
             if (Session["User"] == null)
@@ -65,10 +68,28 @@ namespace Group5ScrumProject.Controllers
         {
             return View();
         }
-
+     
         public ActionResult AdminUserAdd()
         {
+            ViewBag.iUserRole = new SelectList(db.tbRoles, "iRoleID", "sRoleType");
             return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AdminUserAdd(tbUser user)
+        {
+           
+            if (ModelState.IsValid)
+            {
+                user.iBlocked = 0;
+                user.iActivBooking = 0;
+         
+              db.tbUsers.InsertOnSubmit(user);
+                db.SubmitChanges();
+             return RedirectToAction("Index");
+            }
+
+            return View(user);
         }
 
         public ActionResult AdminUserEdit()
@@ -78,6 +99,8 @@ namespace Group5ScrumProject.Controllers
 
         public ActionResult AdminUserDelete()
         {
+      
+
             return View();
         }
 
