@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Web;
 using System.Web.Mvc;
+using Group5ScrumProject.Models;
+
 
 namespace Group5ScrumProject.Controllers
 {
@@ -63,10 +66,28 @@ namespace Group5ScrumProject.Controllers
         {
             return View();
         }
-
+       
         public ActionResult AdminUserAdd()
         {
+          //  ViewBag.Genre = new SelectList(db.Genres, "GenreId", "GenreName");
             return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AdminUserAdd(tbUser user)
+        {
+            ViewBag.Role = new SelectList(db.tbRoles, "iRoleID", "sRoleType");
+            if (ModelState.IsValid)
+            {
+                user.iBlocked = 0;
+                user.iActivBooking = 0;
+          
+              db.tbUsers.InsertOnSubmit(user);
+                db.SubmitChanges();
+             return RedirectToAction("Index");
+            }
+
+            return View(user);
         }
 
         public ActionResult AdminUserEdit()
