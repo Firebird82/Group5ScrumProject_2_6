@@ -81,7 +81,7 @@ namespace Group5ScrumProject.Controllers
             {
                 user.iBlocked = 0;
                 user.iActivBooking = 0;
-          
+              
               db.tbUsers.InsertOnSubmit(user);
                 db.SubmitChanges();
              return RedirectToAction("Index");
