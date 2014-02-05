@@ -12,7 +12,7 @@ namespace Group5ScrumProject.Controllers
     public class HomeController : Controller
     {
         DataClasses1DataContext db = new DataClasses1DataContext();
-
+       
         public ActionResult Index()
         {
             if (Session["User"] == null)
@@ -66,22 +66,22 @@ namespace Group5ScrumProject.Controllers
         {
             return View();
         }
-       
+     
         public ActionResult AdminUserAdd()
         {
-            ViewBag.Role = new SelectList(db.tbRoles, "iRoleID", "sRoleType");
+            ViewBag.iUserRole = new SelectList(db.tbRoles, "iRoleID", "sRoleType");
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AdminUserAdd(tbUser user)
         {
-            ViewBag.Role = new SelectList(db.tbRoles, "iRoleID", "sRoleType");
+           
             if (ModelState.IsValid)
             {
                 user.iBlocked = 0;
                 user.iActivBooking = 0;
-              
+         
               db.tbUsers.InsertOnSubmit(user);
                 db.SubmitChanges();
              return RedirectToAction("Index");
@@ -97,6 +97,8 @@ namespace Group5ScrumProject.Controllers
 
         public ActionResult AdminUserDelete()
         {
+      
+
             return View();
         }
 
