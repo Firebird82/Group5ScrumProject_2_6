@@ -14,7 +14,7 @@ namespace Group5ScrumProject.Controllers
     public class HomeController : Controller
     {
         DataClasses1DataContext db = new DataClasses1DataContext();
-       
+
         public ActionResult Index()
         {
             if (Session["User"] == null)
@@ -68,7 +68,7 @@ namespace Group5ScrumProject.Controllers
         {
             return View();
         }
-     
+
         public ActionResult AdminUserAdd()
         {
             ViewBag.iUserRole = new SelectList(db.tbRoles, "iRoleID", "sRoleType");
@@ -78,15 +78,15 @@ namespace Group5ScrumProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AdminUserAdd(tbUser user)
         {
-           
+
             if (ModelState.IsValid)
             {
                 user.iBlocked = 0;
                 user.iActivBooking = 0;
-         
-              db.tbUsers.InsertOnSubmit(user);
+
+                db.tbUsers.InsertOnSubmit(user);
                 db.SubmitChanges();
-             return RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
 
             return View(user);
@@ -99,7 +99,7 @@ namespace Group5ScrumProject.Controllers
 
         public ActionResult AdminUserDelete()
         {
-      
+
 
             return View();
         }
@@ -148,7 +148,7 @@ namespace Group5ScrumProject.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult AdminBookingAdd(string ddlRooms, DateTime day, TimeSpan ddlTimeStart, TimeSpan ddlTimeEnd)
+        public ActionResult AdminBookingAdd(string ddlRooms, string day, TimeSpan ddlTimeStart, TimeSpan ddlTimeEnd)
         {
             //Lägg in validation så att timestart inte är större än timeend och tvärtom
 
@@ -158,37 +158,35 @@ namespace Group5ScrumProject.Controllers
             {
                 iUserId = u.iUserId,
                 iRumId = int.Parse(ddlRooms),
-                dtDateDay = day,
+                dtDateDay = Convert.ToDateTime(day),
                 dtTimeStart = ddlTimeStart,
                 dtTimeEnd = ddlTimeEnd
             };
 
-
-
-
             var existingBooking = db.tbBookings
-                .Where(b => b.iRumId == int.Parse(ddlRooms) && b.dtDateDay == day);
+                .Where(b => b.iRumId == int.Parse(ddlRooms) && b.dtDateDay == newBooking.dtDateDay);
 
             if (existingBooking != null)
             {
                 foreach (var b in existingBooking)
                 {
-                    //Kollar om det finns en bokning som startar tidigare och slutar efter den nya bokningens starttid
-                    //eller om det finns en bokning som slutar tidigare och startar efter den nya bokningens sluttid
-                    if ((b.dtTimeStart < newBooking.dtTimeStart && b.dtTimeEnd > newBooking.dtTimeStart) || 
-                        (b.dtTimeStart > newBooking.dtTimeEnd && b.dtTimeEnd < newBooking.dtTimeStart))
-                    {
+                    //Kollar om det finns en bokning som startar samtidigt/senare och slutar samtidigt/tidigare än den nya bokningens starttid
+                    //eller ..ööö  Fortsätter kommentera imorgon //Hannah
 
+                    //Tar bort befintlig bokning
+                    if ((newBooking.dtTimeStart >= b.dtTimeStart && newBooking.dtTimeStart < b.dtTimeEnd) ||
+                        (newBooking.dtTimeEnd > b.dtTimeStart && newBooking.dtTimeEnd <= b.dtTimeEnd))
+                    {
+                        db.tbBookings.DeleteOnSubmit(b);
                     }
                 }
-                //Ta bort existerande bokning
             }
+            //Lägger in ny bokning
             db.tbBookings.InsertOnSubmit(newBooking);
             db.SubmitChanges();
 
             return View("AdminViewSettings");
         }
-
 
         public ActionResult AdminBookingEdit()
         {
@@ -197,8 +195,6 @@ namespace Group5ScrumProject.Controllers
 
         public ActionResult AdminBookingDelete()
         {
-
-
             return View();
         }
     }
