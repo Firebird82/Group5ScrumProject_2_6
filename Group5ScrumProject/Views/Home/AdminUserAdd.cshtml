@@ -40,15 +40,7 @@
             @Html.EditorFor(model => model.sUserPassword)
             @Html.ValidationMessageFor(model => model.sUserPassword)
         </div>
-           <div>
-            @Html.LabelFor(model => model.iUserRole, "Rättigheter")
-        </div>
-        <div>
           
-            @Html.DropDownList("iUserRole")
-         
-            @Html.ValidationMessageFor(model => model.iUserRole)
-        </div>
           <div>
             @Html.LabelFor(model => model.sClass, "Klass")
         </div>
@@ -57,7 +49,15 @@
             @Html.EditorFor(model => model.sClass)
             @Html.ValidationMessageFor(model => model.sClass)
         </div>
+          <div>
+            @Html.LabelFor(model => model.iUserRole, "Rättigheter")
+        </div>
+        <div>
+          
+            @Html.DropDownList("iUserRole")
          
+            @Html.ValidationMessageFor(model => model.iUserRole)
+        </div>
          
        
         <p>
