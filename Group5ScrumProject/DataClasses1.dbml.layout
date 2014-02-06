@@ -2,17 +2,50 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="DataClasses1">
   <DataContextMoniker Name="/DataClasses1DataContext" />
   <nestedChildShapes>
-    <classShape Id="5b658da6-97d2-4cf7-856c-06abb47757a0" absoluteBounds="0.75, 0.75, 2, 1.3862939453125">
-      <DataClassMoniker Name="/DataClasses1DataContext/tbRoom" />
+    <classShape Id="e888bfb3-36f4-4b8c-8b64-9cc06e51394a" absoluteBounds="6.25, 1.125, 2, 1.9631982421875003">
+      <DataClassMoniker Name="/DataClasses1DataContext/tbBooking" />
       <nestedChildShapes>
-        <elementListCompartment Id="ce1c7243-f5f3-43c9-a68b-aeba0cb25588" absoluteBounds="0.765, 1.21, 1.9700000000000002, 0.8262939453125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="b3723797-2f02-4c5b-9136-00bf4c4dbf0e" absoluteBounds="6.265, 1.585, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="baace44f-7e09-4674-8b23-fea1bb72779e" absoluteBounds="3.75, 0.75, 2, 1.7708968098958331">
+    <classShape Id="4f03e843-8139-4b1d-87d6-d3d91f3edd67" absoluteBounds="3.5, 1, 2, 2.3478011067708335">
       <DataClassMoniker Name="/DataClasses1DataContext/tbUser" />
       <nestedChildShapes>
-        <elementListCompartment Id="7b076ada-5a46-402a-95e3-62917ae9438b" absoluteBounds="3.765, 1.21, 1.9700000000000002, 1.2108968098958333" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="897f4bf7-8a45-4069-b67e-159e71e65426" absoluteBounds="3.515, 1.46, 1.9700000000000002, 1.7878011067708335" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
+    <classShape Id="785ce768-190e-4052-ac33-1fa2dce3ac0d" absoluteBounds="0.75, 1.5, 2, 1.1939925130208335">
+      <DataClassMoniker Name="/DataClasses1DataContext/tbRole" />
+      <nestedChildShapes>
+        <elementListCompartment Id="0511020f-7332-462f-8e38-e7d497b78267" absoluteBounds="0.765, 1.96, 1.9700000000000002, 0.63399251302083326" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="6dd4dbbc-a9b8-49b7-bc12-ec0d1070543f" absoluteBounds="3.5, 5.375, 2, 1.5785953776041666">
+      <DataClassMoniker Name="/DataClasses1DataContext/tbRoom" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6c6419d5-4269-4e90-a62b-b500c5b35be5" absoluteBounds="3.515, 5.835, 1.9700000000000002, 1.0185953776041665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(5.5 : 2.10659912109375); (6.25 : 2.10659912109375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DataClasses1DataContext/tbUser/tbUser_tbBooking" />
+      <nodes>
+        <classShapeMoniker Id="4f03e843-8139-4b1d-87d6-d3d91f3edd67" />
+        <classShapeMoniker Id="e888bfb3-36f4-4b8c-8b64-9cc06e51394a" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(2.75 : 2.09699625651042); (3.5 : 2.09699625651042)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DataClasses1DataContext/tbRole/tbRole_tbUser" />
+      <nodes>
+        <classShapeMoniker Id="785ce768-190e-4052-ac33-1fa2dce3ac0d" />
+        <classShapeMoniker Id="4f03e843-8139-4b1d-87d6-d3d91f3edd67" />
+      </nodes>
+    </associationConnector>
+    <associationConnector edgePoints="[(5.5 : 6.16429768880208); (7.25 : 6.16429768880208); (7.25 : 3.0881982421875)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/DataClasses1DataContext/tbRoom/tbRoom_tbBooking" />
+      <nodes>
+        <classShapeMoniker Id="6dd4dbbc-a9b8-49b7-bc12-ec0d1070543f" />
+        <classShapeMoniker Id="e888bfb3-36f4-4b8c-8b64-9cc06e51394a" />
+      </nodes>
+    </associationConnector>
   </nestedChildShapes>
 </ordesignerObjectsDiagram>

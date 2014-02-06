@@ -1,10 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ProjectRooms" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="WebSettings" ConnectionString="Data Source=CHRISTIAN-PC\SQLEXPRESS;Initial Catalog=ProjectRooms;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="ProjectRoomsConnectionString3" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.tbRoom" Member="tbRooms">
-    <Type Name="tbRoom">
-      <Column Name="iRoomId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="sRoomName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="iRoomChairs" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+  <Table Name="dbo.tbBooking" Member="tbBookings">
+    <Type Name="tbBooking">
+      <Column Name="iBookingID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="iUserId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="iRumId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="dtDateDay" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="dtTimeStart" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Column Name="dtTimeEnd" Type="System.TimeSpan" DbType="Time NOT NULL" CanBeNull="false" />
+      <Association Name="tbUser_tbBooking" Member="tbUser" ThisKey="iUserId" OtherKey="iUserId" Type="tbUser" IsForeignKey="true" />
+      <Association Name="tbRoom_tbBooking" Member="tbRoom" ThisKey="iRumId" OtherKey="iRoomId" Type="tbRoom" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.tbUser" Member="tbUsers">
@@ -13,7 +18,28 @@
       <Column Name="sUserName" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="sUserLoginName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="sUserPassword" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="sUserRole" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="iUserRole" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="iBlocked" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="iActivBooking" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="sClass" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
+      <Association Name="tbUser_tbBooking" Member="tbBookings" ThisKey="iUserId" OtherKey="iUserId" Type="tbBooking" />
+      <Association Name="tbRole_tbUser" Member="tbRole" ThisKey="iUserRole" OtherKey="iRoleID" Type="tbRole" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbRole" Member="tbRoles">
+    <Type Name="tbRole">
+      <Column Name="iRoleID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="sRoleType" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="tbRole_tbUser" Member="tbUsers" ThisKey="iRoleID" OtherKey="iUserRole" Type="tbUser" />
+    </Type>
+  </Table>
+  <Table Name="dbo.tbRoom" Member="tbRooms">
+    <Type Name="tbRoom">
+      <Column Name="iRoomId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="sRoomName" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="iRoomChairs" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="sRoomDesc" Type="System.String" DbType="NVarChar(150)" CanBeNull="true" />
+      <Association Name="tbRoom_tbBooking" Member="tbBookings" ThisKey="iRoomId" OtherKey="iRumId" Type="tbBooking" />
     </Type>
   </Table>
 </Database>

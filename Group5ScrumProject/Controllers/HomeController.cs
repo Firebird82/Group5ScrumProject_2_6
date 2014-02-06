@@ -118,9 +118,25 @@ namespace Group5ScrumProject.Controllers
             return View();
         }
 
+        [HttpGet]
         public ActionResult AdminRoomDelete()
         {
+            var DeleteRooms = db.tbRooms;
+            ViewBag.Rooms = DeleteRooms;
+            ViewBag.User = Session["User"];
+
             return View();
+        }
+        [HttpPost]
+        public ActionResult AdminRoomDelete(string id)
+        {
+            var Room2Delete = (from f in db.tbRooms
+                               where f.iRoomId == int.Parse(id)
+                               select f).FirstOrDefault();
+
+            db.tbRooms.DeleteOnSubmit(Room2Delete);
+            db.SubmitChanges();
+            return View("AdminViewSettings");
         }
 
         [HttpGet]
