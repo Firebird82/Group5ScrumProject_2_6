@@ -1,0 +1,66 @@
+﻿.colRowButton{width:70px;text-align:left;}
+.webgrid td
+{
+ 
+border: 1px solid #D2A9A5;
+    background-color: #E7B7B7;
+}
+.webgrid a
+{
+color: #fff;
+}
+ 
+.webgrid-header td
+{
+padding: 0px 5px;
+text-align: center;
+ 
+height: 20px;
+ 
+}
+ 
+.webgrid-header th
+{
+background-color: #BF4E4C; margin-bottom:2px;
+    border: 1px solid #AE4642;
+}
+ 
+.webgrid-footer td
+{
+padding: 6px 5px;
+text-align: left; color:#000;
+background-color: #F9F9F9;
+ 
+height: 20px ; border:1px solid #AC4542;
+ 
+}
+.webgrid-footer td a
+{
+padding: 6px 5px;
+text-align: left; color:#000;
+background-color: #F9F9F9;
+ 
+height: 20px ;
+ 
+}
+ 
+.webgrid-alternating-row td
+{
+height: 22px;
+background-color: #EFDCDA;
+ 
+}
+ 
+.webgrid-row-style
+{
+height: 22px;
+border-bottom: 1px solid #AC4542;
+ 
+}
+ 
+.webgrid-selected-row
+{
+font-weight: bold;
+}
+
+.gridhide { visibility:hidden }

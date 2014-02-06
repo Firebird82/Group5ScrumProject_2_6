@@ -108,10 +108,60 @@ namespace Group5ScrumProject.Controllers
             return View();
         }
 
-        public ActionResult AdminRoomAdd()
+        private List<Room> getRooms()
         {
-            return View();
+            List<Room> rooms = new List<Room>();
+            db.tbRooms.ToList().ForEach(room => { rooms.Add(new Room(room)); });
+            return rooms;
         }
+        public ActionResult AdminRoomAdd(string Namn, string Chairs, string Rumsbeskrivning)
+        {
+            bool status = false; // Meddelande indikator
+            List<Room> rooms = getRooms();
+            if (Namn != null)
+            {
+                if (Namn == "")
+                {
+                    @ViewBag.status = "Du måste ange ett rumsnamn.";
+                    status = true;
+                }
+                if (Chairs == null || Chairs == "")
+                {
+                    Chairs = "0";
+                }
+                if (Rumsbeskrivning == null || Rumsbeskrivning == "")
+                {
+                    Rumsbeskrivning = "";
+                }
+                if (!status)
+                    foreach (var room in db.tbRooms)
+                        if (room.sRoomName.ToLower() == Namn.ToLower())
+                        {
+                            status = true;
+                            @ViewBag.status = "Rummet finns redan, Välj ett annat namn.";
+                        }
+                if (!status)
+                {
+                    tbRoom room = new tbRoom
+                    {
+                        sRoomName = Namn,
+                        iRoomChairs = int.Parse(Chairs),
+                        sRoomDesc = Rumsbeskrivning
+                    };
+
+                    db.tbRooms.InsertOnSubmit(room);
+                    db.SubmitChanges();
+                    @ViewBag.status = "Rummet är skapat!";
+                    status = true;
+                    // Uppdatera det nya rummet i listan för att visa användare.
+                    rooms = getRooms();
+                }
+            }
+            ViewBag.nrOfRows = db.tbRooms.Count(); // Skickar med antal rader till webgrid
+            ViewBag.message = status; // Säg till userland :) om vi har meddelande till användaren.
+            return View("AdminRoomAdd", rooms);
+        }
+
 
         public ActionResult AdminRoomEdit()
         {

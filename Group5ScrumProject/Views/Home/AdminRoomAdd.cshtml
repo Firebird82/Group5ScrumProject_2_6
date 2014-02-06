@@ -1,5 +1,53 @@
-﻿@{
-    ViewBag.Title = "AdminRoomAdd";
+﻿@using System.ComponentModel.DataAnnotations.Schema
+@using System.Drawing
+@using System.Runtime.Remoting.Messaging
+@using System.Web.Caching
+@using System.Web.UI.WebControls
+@using Microsoft.Ajax.Utilities
+@model List<Group5ScrumProject.Models.Room>
+@using Group5ScrumProject
+<script src="~/Content/js/webgrid.js"></script>
+
+@{
+    ViewBag.Title = "Lägg till rum";
+}
+@{  // Något meddelande till användaren ?
+    if (ViewBag.message)
+    {
+        @:<h2>@ViewBag.status</h2>
+    }
+}
+<h2>Lägg till rum</h2>
+@{
+    WebGrid grid = new WebGrid(Model, rowsPerPage: ViewBag.nrOfRows);
 }
 
-<h2>AdminRoomAdd</h2>
+@{ // http://mvc-tutorials.com/asp-net-mvc-webgrid-with-paging-sorting-edit-and-delete-commands
+  
+   Html.BeginForm();
+   // Id är gömt med javaquery script, inte för att det behövs här men senare kanske..
+    @grid.GetHtml(
+        columns: grid.Columns(
+        grid.Column("RoomId"),
+        grid.Column("RoomName", header: "Namn"),
+        grid.Column("Chairs", header: "Stolar"),
+        grid.Column("RoomDescription", header: "Rumsbeskrivning")
+        ),
+            tableStyle: "webgrid",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style"
+            )
+}
+<br/>
+Namn på rum @Html.TextBox("Namn")
+<br/>
+Antal stolar @Html.TextBox("Chairs")
+<br/>
+Rumsbeskrivning @Html.TextBox("Rumsbeskrivning")
+<br/>
+<input type="submit" value="Skapa rum" /> 
+
+
