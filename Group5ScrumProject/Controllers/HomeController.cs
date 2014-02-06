@@ -47,14 +47,12 @@ namespace Group5ScrumProject.Controllers
             {
                 Session["User"] = loggedInUser;
                 return RedirectToAction("Index");
-
             }
 
             //Om användaren inte fyller i alla fält
             if (tbxName != null && tbxPassword != null)
                 ViewBag.Message = "Felaktigt användarnamn eller lösenord";
             return View();
-
         }
 
         public ActionResult Logout()
@@ -145,10 +143,41 @@ namespace Group5ScrumProject.Controllers
             ViewBag.ddlTimeStart = (IEnumerable<SelectListItem>)hours;
             ViewBag.ddlTimeEnd = (IEnumerable<SelectListItem>)hours;
 
+            if (Session["bookingConfirmed"] == null || (string)Session["bookingConfirmed"] == "")
+            {
+                ViewBag.BookingMessage = "";
+            }
+            else
+            {
+                ViewBag.BookingMessage = "Bokning genomförd";
+                Session["bookingConfirmed"] = "";
+            }
+
             return View();
         }
         [HttpPost]
-        public ActionResult AdminBookingAdd(string ddlRooms, string day, TimeSpan ddlTimeStart, TimeSpan ddlTimeEnd)
+        public ActionResult AdminBookingAdd(string ddlRooms, DateTime day, TimeSpan ddlTimeStart, TimeSpan ddlTimeEnd, bool recurrent)
+        {
+            if (recurrent == true)
+            {
+                //Lägger till en bokning med detta datum 3 månader fram i tiden
+                AddBookingMethod(ddlRooms, day, ddlTimeStart, ddlTimeEnd);
+                AddBookingMethod(ddlRooms, day.AddMonths(1), ddlTimeStart, ddlTimeEnd);
+                AddBookingMethod(ddlRooms, day.AddMonths(2), ddlTimeStart, ddlTimeEnd);
+                AddBookingMethod(ddlRooms, day.AddMonths(3), ddlTimeStart, ddlTimeEnd);
+            }
+            else
+            {
+                //Lägger endast till en bokning
+                AddBookingMethod(ddlRooms, day, ddlTimeStart, ddlTimeEnd);
+            }
+
+            Session["bookingConfirmed"] = "Bokning genomförd";
+            return RedirectToAction("AdminBookingAdd");
+        }
+
+        //METOD FÖR ATT LÄGGA TILL BOKNING
+        public void AddBookingMethod(string ddlRooms, DateTime day, TimeSpan ddlTimeStart, TimeSpan ddlTimeEnd)
         {
             //Lägg in validation så att timestart inte är större än timeend och tvärtom
 
@@ -158,11 +187,12 @@ namespace Group5ScrumProject.Controllers
             {
                 iUserId = u.iUserId,
                 iRumId = int.Parse(ddlRooms),
-                dtDateDay = Convert.ToDateTime(day),
+                dtDateDay = day,
                 dtTimeStart = ddlTimeStart,
                 dtTimeEnd = ddlTimeEnd
             };
 
+            //Kollar om det finns en bokning på samma dag och i samma rum som den nya bokningen
             var existingBooking = db.tbBookings
                 .Where(b => b.iRumId == int.Parse(ddlRooms) && b.dtDateDay == newBooking.dtDateDay);
 
@@ -170,13 +200,12 @@ namespace Group5ScrumProject.Controllers
             {
                 foreach (var b in existingBooking)
                 {
-                    //Kollar om det finns en bokning som startar samtidigt/senare och slutar samtidigt/tidigare än den nya bokningens starttid
-                    //eller ..ööö  Fortsätter kommentera imorgon //Hannah
-
-                    //Tar bort befintlig bokning
+                    //Kollar om det finns en bokning som startar samtidigt/tidigare och slutar tidigare än den nya bokningens starttid
+                    //eller om det finns en bokning som börjar tidigare och slutar samtidigt samtidigt/senare än den nya bokningens sluttid                    
                     if ((newBooking.dtTimeStart >= b.dtTimeStart && newBooking.dtTimeStart < b.dtTimeEnd) ||
                         (newBooking.dtTimeEnd > b.dtTimeStart && newBooking.dtTimeEnd <= b.dtTimeEnd))
                     {
+                        //Tar bort befintlig bokning
                         db.tbBookings.DeleteOnSubmit(b);
                     }
                 }
@@ -184,8 +213,6 @@ namespace Group5ScrumProject.Controllers
             //Lägger in ny bokning
             db.tbBookings.InsertOnSubmit(newBooking);
             db.SubmitChanges();
-
-            return View("AdminViewSettings");
         }
 
         public ActionResult AdminBookingEdit()
@@ -227,7 +254,7 @@ namespace Group5ScrumProject.Controllers
                         user.iActivBooking = 0;                     //Standard value that the user dont have any bookings to start with
                         user.sClass = _values[3];                   //4th place in the file is info about what class the user goes in
                     };
-                    
+
                     db.tbUsers.InsertOnSubmit(user);                //Save to database
                     db.SubmitChanges();                             //Save to database
                 }

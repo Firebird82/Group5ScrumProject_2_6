@@ -17,7 +17,13 @@
             Sluttid:
             @Html.DropDownList("ddlTimeEnd")
         </p>
+        <p>Återkommande bokning detta datum 3 månader framöver: @Html.CheckBox("recurrent")</p>
+        
         <input type="submit" value="Boka valt rum" />  
+        
+       
     }
+    @ViewBag.BookingMessage
+    @Html.ActionLink("Tillbaka till adminsidan", "AdminViewSettings")
 
 </div>
