@@ -1,5 +1,25 @@
-﻿@{
+﻿@model IEnumerable<Group5ScrumProject.tbUser>
+@{
     ViewBag.Title = "AdminUserEdit";
 }
 
 <h2>AdminUserEdit</h2>
+@using (Ajax.BeginForm(
+    new AjaxOptions
+    {
+        HttpMethod = "GET",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "list",
+
+        Url = ""
+
+    }))
+{
+
+    <input type="search" name="searchTerm" />
+    <input type="submit" value="search by name" />
+
+}
+<div id="container">
+    @Html.Partial("_UsersEdit", Model)
+</div>
