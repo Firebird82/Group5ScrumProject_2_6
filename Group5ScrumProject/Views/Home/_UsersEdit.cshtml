@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Group5ScrumProject.tbUser>
+<div id="list">
+    <table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.sUserName)
+                </td>
+                <td>
+
+                    @{
+
+
+                        @Html.ActionLink("Edit", "Edit", new { id = item.iUserId })
+
+
+                    }
+
+
+
+
+
+                </td>
+            </tr>
+
+
+
+
+        }
+    </table>
+</div>

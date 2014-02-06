@@ -319,6 +319,8 @@
     <Content Include="Views\Home\AdminBookingEdit.cshtml" />
     <Content Include="Views\Home\AdminBookingDelete.cshtml" />
     <Content Include="Views\Home\UploadFile.cshtml" />
+    <Content Include="Views\Home\_UsersEdit.cshtml" />
+    <Content Include="Views\Home\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -91,10 +91,65 @@ namespace Group5ScrumProject.Controllers
             return View(user);
         }
 
-        public ActionResult AdminUserEdit()
+        public List<tbUser> Searching = new List<tbUser>();
+        public ActionResult AdminUserEdit(string searchTerm = null)
         {
-            return View();
+
+
+
+            {
+                Searching = (from m in db.tbUsers
+                             where
+                                 m.sUserLoginName.Contains(searchTerm) || m.sUserName.Contains(searchTerm)
+                                 || searchTerm == null
+                             orderby m.sUserName
+                             select m).ToList();
+
+                if (Request.IsAjaxRequest())
+                {
+
+                    return PartialView("_UsersEdit", Searching);
+                }
+
+
+            }
+
+            return View("AdminUserEdit", Searching);
+
+
         }
+        [HttpGet]
+        public ActionResult Edit(int id = 0)
+        {
+            var v = (from m in db.tbUsers
+                     where m.iUserId == id
+                     select m).FirstOrDefault();
+            return View("Edit", v);
+        }
+        [HttpPost]
+        public ActionResult Edit(tbUser users)
+        {
+            if (users.sUserName != null && users.sUserLoginName != null && users.sUserPassword != null)
+            {
+
+                var user = (from m in db.tbUsers
+                            where
+                            m.iUserId == users.iUserId
+                            select m);
+                foreach (var us in user)
+                {
+                    us.sUserName = users.sUserName;
+                    us.sUserLoginName = users.sUserLoginName;
+                    us.sUserPassword = users.sUserPassword;
+                    us.sClass = users.sClass;
+
+                }
+
+                db.SubmitChanges();
+            }
+            return View("AdminViewSettings");
+        }
+
 
         public ActionResult AdminUserDelete()
         {

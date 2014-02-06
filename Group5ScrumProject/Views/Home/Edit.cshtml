@@ -1,0 +1,61 @@
+﻿@model Group5ScrumProject.tbUser
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Användare</legend>
+
+        @Html.HiddenFor(modelitem => Model.iUserId)
+
+        <div class="editor-label">
+            Loggin Namn
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => Model.sUserLoginName)
+            @Html.ValidationMessageFor(model => Model.sUserLoginName)
+        </div>
+
+        <div class="editor-label">
+            Användar Namn
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => Model.sUserName)
+            @Html.ValidationMessageFor(model => Model.sUserName)
+        </div>
+
+        <div class="editor-label">
+            Lösen
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => Model.sUserPassword)
+            @Html.ValidationMessageFor(model => Model.sUserPassword)
+        </div>
+
+
+        <div class="editor-label">
+            Klass
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => Model.sClass)
+            @Html.ValidationMessageFor(model => Model.sClass)
+        </div>
+
+        <p>
+            <input type="submit" value="Spara" />
+        </p>
+
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "AdminUserEdit")
+</div>
