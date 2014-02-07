@@ -200,7 +200,7 @@ namespace Group5ScrumProject.Controllers
                     tbRoom room = new tbRoom
                     {
                         sRoomName = Namn,
-                        iRoomChairs = int.Parse(Chairs),
+                        iRoomChairs = isInt(Chairs),
                         sRoomDesc = Rumsbeskrivning
                     };
 
@@ -222,6 +222,15 @@ namespace Group5ScrumProject.Controllers
             ViewBag.nrOfRows = db.tbRooms.Count(); // Skickar med antal rader till webgrid
             ViewBag.message = false;
             return View("AdminRoomEdit", getRooms());
+        }
+
+        // Tvingar returvärdet från en sträng till intvärdet 0 ifall strängen inte är en int
+        private int isInt(string s)
+        {
+            int ret;
+            if (int.TryParse(s, out ret))
+                return ret;
+            return 0;
         }
         public ActionResult AdminRoomEditUpdate(string id, string RoomName, string Chairs, string RoomDescription)
         {
@@ -249,7 +258,7 @@ namespace Group5ScrumProject.Controllers
 
                     var rum = db.tbRooms.Where(r => r.iRoomId == int.Parse(id)).FirstOrDefault();
                     rum.sRoomName = RoomName;
-                    rum.iRoomChairs = int.Parse(Chairs);
+                    rum.iRoomChairs = isInt(Chairs);
                     rum.sRoomDesc = RoomDescription;
                     db.SubmitChanges();
                 }

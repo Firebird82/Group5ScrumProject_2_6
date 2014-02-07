@@ -35,7 +35,7 @@
                 "<a href=\"Javascript:$('#id').val('" + item.RoomId + "');" +
                 "$('#roomToChange').html('Uppdatera rum: <b>" + item.RoomName + "</b>');" +
                 "$('#RoomName').val('" + item.RoomName + "');" +
-                "$('#expand-editdiv').slideToggle();\" style='color: #000'>Uppdatera</a>"
+                "$('#expand-editdiv').slideToggle();\" style='color: #000'>Uppdatera</a>" 
                 ), header: " ")
             ),
         tableStyle: "webgrid",
@@ -66,7 +66,7 @@
         </div>
         <div class="clearBoth">
             <br/>
-            <input type="submit" value="Uppdatera"/>
+            <input type="submit" value="Uppdatera" />
         </div>
     </div>
     <br/>
@@ -75,6 +75,8 @@
         $("#id").css("display", "none");
         $('#RoomName').attr("readonly", "true")
             .css("background-color", "gray");
+        $("#Chairs").val('');
+        $("#RoomDescription").val('');
     </script>
 }
 
