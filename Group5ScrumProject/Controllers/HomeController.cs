@@ -337,7 +337,6 @@ namespace Group5ScrumProject.Controllers
                 //Lägger endast till en bokning
                 AddBookingMethod(ddlRooms, day, ddlTimeStart, ddlTimeEnd);
             }
-
             Session["bookingConfirmed"] = "Bokning genomförd";
             return RedirectToAction("AdminBookingAdd");
         }
