@@ -327,28 +327,33 @@ namespace Group5ScrumProject.Controllers
             }
             catch (Exception)
             {
-
                 return View("AdminViewSettings");
             }
-
         }
 
         [HttpPost]
-        public ActionResult AdminRoomDelete(string id)
+        public ActionResult AdminRoomDelete(int id)
         {
+            var DeleteRooms = db.tbRooms;
+            ViewBag.Rooms = DeleteRooms;
+            ViewBag.User = Session["User"];
+
             try
             {
                 var Room2Delete = (from f in db.tbRooms
-                                   where f.iRoomId == int.Parse(id)
+                                   where f.iRoomId == id
                                    select f).FirstOrDefault();
 
                 db.tbRooms.DeleteOnSubmit(Room2Delete);
                 db.SubmitChanges();
-                return View("AdminViewSettings");
+
+                ViewBag.Message = "Rum " + Room2Delete.sRoomName +" är borttaget";
+                return View();
             }
             catch
             {
-                return View("AdminViewSettings");
+                ViewBag.Message = "Oj oj.... Något har gått fel :(";
+                return View();
             }
         }
 
