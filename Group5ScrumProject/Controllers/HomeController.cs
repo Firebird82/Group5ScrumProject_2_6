@@ -77,14 +77,22 @@ namespace Group5ScrumProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AdminUserAdd(tbUser user)
         {
-
-            if (ModelState.IsValid)
+            ViewBag.iUserRole = new SelectList(db.tbRoles, "iRoleID", "sRoleType");
+            try
             {
-                user.iBlocked = 0;
+                if (ModelState.IsValid)
+                {
+                    user.iBlocked = 0;
 
-                db.tbUsers.InsertOnSubmit(user);
-                db.SubmitChanges();
-                return RedirectToAction("Index");
+                    db.tbUsers.InsertOnSubmit(user);
+                    db.SubmitChanges();
+                    return RedirectToAction("AdminViewSettings");
+                }
+            }
+            catch (Exception)
+            {
+
+                return View();
             }
 
             return View(user);
