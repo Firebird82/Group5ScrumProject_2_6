@@ -344,6 +344,11 @@ namespace Group5ScrumProject.Controllers
 
         public ActionResult AdminBookingDelete()
         {
+            List<tbBooking> bookings = (from f in db.tbBookings
+                                        select f).ToList();
+
+            ViewBag.Bookings = bookings;
+
             return View();
         }
 
