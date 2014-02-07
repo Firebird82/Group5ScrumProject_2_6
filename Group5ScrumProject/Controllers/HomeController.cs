@@ -360,13 +360,13 @@ namespace Group5ScrumProject.Controllers
 
                 if (Session["bookingConfirmed"] == null || (string)Session["bookingConfirmed"] == "")
                 {
-                    ViewBag.BookingMessage = "";
-
+                    ViewBag.BookingMessage = Session["ErrorMessage"];
                 }
                 else
                 {
                     ViewBag.BookingMessage = "Bokning genomförd";
                     Session["bookingConfirmed"] = "";
+                    Session["ErrorMessage"] = "";
                 }
             }
             ViewBag.Date = DateTime.Today.ToString("yyyy/MM/dd");
@@ -375,20 +375,30 @@ namespace Group5ScrumProject.Controllers
         [HttpPost]
         public ActionResult AdminBookingAdd(string ddlRooms, DateTime day, TimeSpan ddlTimeStart, TimeSpan ddlTimeEnd, bool recurrent)
         {
-            if (recurrent == true)
+            if (ddlTimeStart.Hours == ddlTimeEnd.Hours)
             {
-                //Lägger till en bokning med detta datum 3 månader fram i tiden
-                AddBookingMethod(ddlRooms, day, ddlTimeStart, ddlTimeEnd);
-                AddBookingMethod(ddlRooms, day.AddMonths(1), ddlTimeStart, ddlTimeEnd);
-                AddBookingMethod(ddlRooms, day.AddMonths(2), ddlTimeStart, ddlTimeEnd);
-                AddBookingMethod(ddlRooms, day.AddMonths(3), ddlTimeStart, ddlTimeEnd);
+                Session["ErrorMessage"] = "Starttid och sluttid kan ej vara samma tid.";
+            }
+            else if (ddlTimeStart.Hours > ddlTimeEnd.Hours)
+            {
+                Session["ErrorMessage"] = "Sluttid kan inte inträffa innan starttid.";
             }
             else
             {
-                //Lägger endast till en bokning
-                AddBookingMethod(ddlRooms, day, ddlTimeStart, ddlTimeEnd);
+                if (recurrent == true)
+                {
+                    //Lägger till en bokning med detta datum 3 månader fram i tiden
+                    AddBookingMethod(ddlRooms, day, ddlTimeStart, ddlTimeEnd);
+                    AddBookingMethod(ddlRooms, day.AddMonths(1), ddlTimeStart, ddlTimeEnd);
+                    AddBookingMethod(ddlRooms, day.AddMonths(2), ddlTimeStart, ddlTimeEnd);
+                    AddBookingMethod(ddlRooms, day.AddMonths(3), ddlTimeStart, ddlTimeEnd);
+                }
+                else
+                {
+                    //Lägger endast till en bokning
+                    AddBookingMethod(ddlRooms, day, ddlTimeStart, ddlTimeEnd);
+                }
             }
-            Session["bookingConfirmed"] = "Bokning genomförd";
             return RedirectToAction("AdminBookingAdd");
         }
 
@@ -396,6 +406,7 @@ namespace Group5ScrumProject.Controllers
         public void AddBookingMethod(string ddlRooms, DateTime day, TimeSpan ddlTimeStart, TimeSpan ddlTimeEnd)
         {
             //Lägg in validation så att timestart inte är större än timeend och tvärtom
+
 
             tbUser u = (tbUser)Session["User"];
 
@@ -429,6 +440,7 @@ namespace Group5ScrumProject.Controllers
             //Lägger in ny bokning
             db.tbBookings.InsertOnSubmit(newBooking);
             db.SubmitChanges();
+            Session["bookingConfirmed"] = "Bokning genomförd";
         }
 
         public ActionResult AdminBookingEdit()
@@ -461,14 +473,14 @@ namespace Group5ScrumProject.Controllers
 
             try
             {
-                
-            var bookings = db.tbBookings
-                .Where(b => b.iBookingID == int.Parse(id))
-                .FirstOrDefault();
 
-            db.tbBookings.DeleteOnSubmit(bookings);
-            db.SubmitChanges();
-            return View("AdminViewSettings");
+                var bookings = db.tbBookings
+                    .Where(b => b.iBookingID == int.Parse(id))
+                    .FirstOrDefault();
+
+                db.tbBookings.DeleteOnSubmit(bookings);
+                db.SubmitChanges();
+                return View("AdminViewSettings");
 
             }
             catch (Exception)
