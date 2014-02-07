@@ -1,4 +1,4 @@
-﻿@using Group5ScrumProject
+﻿@*@using Group5ScrumProject
 
 @{
     ViewBag.Title = "AdminBookingDelete";
@@ -14,4 +14,37 @@
     <option name="ddlBooking" value="ddlBooking" selected>Välj bokning</option>
 </select>
 
-<input id="Button1" type="button" value="Ta bort" />
+<input id="Button1" type="button" value="Ta bort" />*@
+
+
+@using Group5ScrumProject
+
+@{
+    ViewBag.Title = "AdminBookingDelete";
+}
+
+
+<h2>AdminBookingDelete</h2>
+@using (Html.BeginForm("AdminBookingDelete", "Home", FormMethod.Post))
+{    
+    <table>
+        @foreach (var item in ViewBag.Bookings)
+        {
+            <tr>
+                <td>Rum: @item.iRumId</td>
+                <td>@item.dtDateDay.ToShortDateString()</td>
+                <td>@string.Format("{0:00}:{1:00}", item.dtTimeStart.Hours, item.dtTimeStart.Minutes)</td>
+                <td>@string.Format("{0:00}:{1:00}", item.dtTimeEnd.Hours, item.dtTimeEnd.Minutes)</td>
+                <td>
+                    @Html.ActionLink("Ta bort", "AdminBookingDelete", new { id = item.iBookingID })
+                </td>
+            </tr>
+        }
+    </table>
+    <br />
+    <br />
+    <input type="submit" value="Bekräfta borttagning" />
+    <br />
+    <br />
+}
+@Html.ActionLink("Tillbaka", "Index")

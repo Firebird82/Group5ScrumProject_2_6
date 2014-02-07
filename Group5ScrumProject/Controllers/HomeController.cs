@@ -404,14 +404,25 @@ namespace Group5ScrumProject.Controllers
             return View();
         }
 
+        [HttpGet]
         public ActionResult AdminBookingDelete()
         {
-            List<tbBooking> bookings = (from f in db.tbBookings
-                                        select f).ToList();
-
+            var bookings = db.tbBookings;
             ViewBag.Bookings = bookings;
 
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult AdminBookingDelete(string id)
+        {
+            var bookings = db.tbBookings
+                .Where(b => b.iBookingID == int.Parse(id))
+                .FirstOrDefault();
+
+            db.tbBookings.DeleteOnSubmit(bookings);
+            db.SubmitChanges();
+            return View("AdminViewSettings");
         }
 
         public ActionResult UploadFile(string Submit) //David
