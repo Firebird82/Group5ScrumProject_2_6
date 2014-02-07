@@ -456,6 +456,12 @@ namespace Group5ScrumProject.Controllers
         [HttpPost]
         public ActionResult AdminBookingDelete(string id)
         {
+            var bookingsAll = db.tbBookings;
+            ViewBag.Bookings = bookingsAll;
+
+            try
+            {
+                
             var bookings = db.tbBookings
                 .Where(b => b.iBookingID == int.Parse(id))
                 .FirstOrDefault();
@@ -463,6 +469,12 @@ namespace Group5ScrumProject.Controllers
             db.tbBookings.DeleteOnSubmit(bookings);
             db.SubmitChanges();
             return View("AdminViewSettings");
+
+            }
+            catch (Exception)
+            {
+                return View("AdminBookingDelete");
+            }
         }
 
         public ActionResult UploadFile(string Submit) //David
