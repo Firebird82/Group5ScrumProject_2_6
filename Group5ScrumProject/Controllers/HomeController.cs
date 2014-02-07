@@ -124,7 +124,7 @@ namespace Group5ScrumProject.Controllers
             return View("AdminUserEdit", Searching);
         }
         [HttpGet]
-        public ActionResult Edit(int id = 0)
+        public ActionResult Edit(int id)
         {
             var v = (from m in db.tbUsers
                      where m.iUserId == id
@@ -134,27 +134,33 @@ namespace Group5ScrumProject.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(tbUser users)
+        public ActionResult Edit(tbUser users, int id)
         {
+            var v = (from m in db.tbUsers
+                     where m.iUserId == id
+                     select m).FirstOrDefault();
+
             if (users.sUserName != null && users.sUserLoginName != null && users.sUserPassword != null)
             {
-
                 var user = (from m in db.tbUsers
-                            where
-                            m.iUserId == users.iUserId
-                            select m);
-                foreach (var us in user)
-                {
-                    us.sUserName = users.sUserName;
-                    us.sUserLoginName = users.sUserLoginName;
-                    us.sUserPassword = users.sUserPassword;
-                    us.sClass = users.sClass;
-                    us.iBlocked = users.iBlocked;
-                }
-
+                            where m.iUserId == users.iUserId
+                            select m).FirstOrDefault();
+                
+                user.sUserName = users.sUserName;
+                user.sUserLoginName = users.sUserLoginName;
+                user.sUserPassword = users.sUserPassword;
+                user.sClass = users.sClass;
+                user.iBlocked = users.iBlocked;
+                
                 db.SubmitChanges();
+
+                
+                ViewBag.Message = "Dina ändringar är sparade";
+                return View("Edit", v);
             }
-            return View("AdminViewSettings");
+
+            ViewBag.Message = "Vissa fält är tomma och måste fyllas i";
+            return View("Edit", v);
         }
 
         [HttpGet]
