@@ -48,7 +48,20 @@
             @Html.EditorFor(model => Model.sClass)
             @Html.ValidationMessageFor(model => Model.sClass)
         </div>
+        <div>
+@Html.LabelFor(model => model.iBlocked, "Spärra")
+</div>
+<div>
+@Html.DropDownListFor(model => model.iBlocked, new SelectList(
+new List<Object>{ 
+new { value = 0 , text = "Ej spärrad" },
+new { value = 1 , text = "Spärrad" }
 
+},
+"value",
+"text",
+2))
+</div>
         <p>
             <input type="submit" value="Spara" />
         </p>

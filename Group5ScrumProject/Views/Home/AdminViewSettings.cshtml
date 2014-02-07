@@ -2,17 +2,22 @@
     ViewBag.Title = "AdminViewSettings";
 }
 <br />
-<h2>Admin User Settings</h2>
-        @Html.ActionLink("Add User", "AdminUserAdd") 
-        @Html.ActionLink("Edit User", "AdminUserEdit") 
-        @Html.ActionLink("Delete User", "AdminUserDelete")
+<h1>Admin inställningar:</h1>
+
+<h2>Användare</h2>
+        @Html.ActionLink("Lägg till användare", "AdminUserAdd") 
+        @Html.ActionLink("Editera användare", "AdminUserEdit") 
+        @Html.ActionLink("Ta bort användare", "AdminUserDelete")
 <br />
-        <h2>Admin Room Settings</h2>
-        @Html.ActionLink("Add Room", "AdminRoomAdd") 
-        @Html.ActionLink("Edit Room", "AdminRoomEdit") 
-        @Html.ActionLink("Delete Room", "AdminRoomDelete") 
+ <h2>Rum </h2>
+        @Html.ActionLink("Lägg till rum", "AdminRoomAdd") 
+        @Html.ActionLink("Editera rum", "AdminRoomEdit") 
+        @Html.ActionLink("Ta bort rum", "AdminRoomDelete") 
 <br />
-<h2>Admin Booking Settings</h2>
-        @Html.ActionLink("Add Booking", "AdminBookingAdd") 
-        @Html.ActionLink("Edit Booking", "AdminBookingEdit") 
-        @Html.ActionLink("Delete Booking", "AdminBookingDelete")  
+<h2>Bokning</h2>
+        @Html.ActionLink("Lägga till bokning", "AdminBookingAdd") 
+        @Html.ActionLink("Editera bokning", "AdminBookingEdit") 
+        @Html.ActionLink("Ta bort Bokning", "AdminBookingDelete")  
+<br />
+<br />
+@Html.ActionLink("Tillbaka","Index")
