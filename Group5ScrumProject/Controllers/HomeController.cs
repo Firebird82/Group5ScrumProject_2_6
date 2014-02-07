@@ -155,22 +155,39 @@ namespace Group5ScrumProject.Controllers
         [HttpGet]
         public ActionResult AdminUserDelete()
         {
-            var UserDel = db.tbUsers;
-            ViewBag.UserDel = UserDel;
-            return View();
+            try
+            {
+                var UserDel = db.tbUsers;
+                ViewBag.UserDel = UserDel;
+                return View();
+            }
+            catch (Exception)
+            {
+                ViewBag.Message = "Klicka på den användare du vill ta bort";
+                return View ();
+            }
+
         }
 
         [HttpPost]
         public ActionResult AdminUserDelete(string id)
         {
+            try
+            {
+                var User2Delete = (from f in db.tbUsers
+                                   where f.iUserId == int.Parse(id)
+                                   select f).FirstOrDefault();
 
-            var User2Delete = (from f in db.tbUsers
-                               where f.iUserId == int.Parse(id)
-                               select f).FirstOrDefault();
+                db.tbUsers.DeleteOnSubmit(User2Delete);
+                db.SubmitChanges();
 
-            db.tbUsers.DeleteOnSubmit(User2Delete);
-            db.SubmitChanges();
 
+            }
+            catch
+            {
+
+                return View ("AdminViewSettings");
+            }
 
             return View("AdminViewSettings");
         }
@@ -288,31 +305,49 @@ namespace Group5ScrumProject.Controllers
         [HttpGet]
         public ActionResult AdminRoomDelete()
         {
-            var DeleteRooms = db.tbRooms;
-            ViewBag.Rooms = DeleteRooms;
-            ViewBag.User = Session["User"];
+            try
+            {
+                var DeleteRooms = db.tbRooms;
+                ViewBag.Rooms = DeleteRooms;
+                ViewBag.User = Session["User"];
 
-            return View();
+                return View();
+            }
+            catch (Exception)
+            {
+                
+                return View("AdminViewSettings");
+            }
+
         }
 
         [HttpPost]
         public ActionResult AdminRoomDelete(string id)
         {
-            var Room2Delete = (from f in db.tbRooms
-                               where f.iRoomId == int.Parse(id)
-                               select f).FirstOrDefault();
+            try
+            {
+                var Room2Delete = (from f in db.tbRooms
+                                   where f.iRoomId == int.Parse(id)
+                                   select f).FirstOrDefault();
 
-            db.tbRooms.DeleteOnSubmit(Room2Delete);
-            db.SubmitChanges();
-            return View("AdminViewSettings");
+                db.tbRooms.DeleteOnSubmit(Room2Delete);
+                db.SubmitChanges();
+                return View("AdminViewSettings");
+            }
+            catch
+            {
+                return View("AdminViewSettings");
+            }
+
         }
 
         [HttpGet]
         public ActionResult AdminBookingAdd()
         {
-            IEnumerable<SelectListItem> rooms = db.tbRooms.Select(x => new SelectListItem { Text = x.sRoomName, Value = x.iRoomId.ToString() });
+            {
+                IEnumerable<SelectListItem> rooms = db.tbRooms.Select(x => new SelectListItem { Text = x.sRoomName, Value = x.iRoomId.ToString() });
 
-            List<SelectListItem> hours = new List<SelectListItem> 
+                List<SelectListItem> hours = new List<SelectListItem> 
             { 
             new SelectListItem { Text = "09:00", Value = "09:00" }, 
             new SelectListItem { Text = "10:00", Value = "10:00" }, 
@@ -324,20 +359,21 @@ namespace Group5ScrumProject.Controllers
             new SelectListItem { Text = "16:00", Value = "16:00" } 
             };
 
-            ViewBag.ddlRooms = rooms;
-            ViewBag.ddlTimeStart = (IEnumerable<SelectListItem>)hours;
-            ViewBag.ddlTimeEnd = (IEnumerable<SelectListItem>)hours;
+                ViewBag.ddlRooms = rooms;
+                ViewBag.ddlTimeStart = (IEnumerable<SelectListItem>)hours;
+                ViewBag.ddlTimeEnd = (IEnumerable<SelectListItem>)hours;
 
-            if (Session["bookingConfirmed"] == null || (string)Session["bookingConfirmed"] == "")
-            {
-                ViewBag.BookingMessage = "";
+                if (Session["bookingConfirmed"] == null || (string)Session["bookingConfirmed"] == "")
+                {
+                    ViewBag.BookingMessage = "";
+                }
+                else
+                {
+                    ViewBag.BookingMessage = "Bokning genomförd";
+                    Session["bookingConfirmed"] = "";
+                }
             }
-            else
-            {
-                ViewBag.BookingMessage = "Bokning genomförd";
-                Session["bookingConfirmed"] = "";
-            }
-
+        
             return View();
         }
         [HttpPost]
