@@ -443,10 +443,18 @@ namespace Group5ScrumProject.Controllers
         [HttpGet]
         public ActionResult AdminBookingDelete()
         {
-            var bookings = db.tbBookings;
-            ViewBag.Bookings = bookings;
+            try
+            {
+                var bookings = db.tbBookings;
+                ViewBag.Bookings = bookings;
 
-            return View();
+                return View();
+            }
+            catch
+            {
+                return View("AdminViewSettings");
+            }
+
         }
 
         [HttpPost]
