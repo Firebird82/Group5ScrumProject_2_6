@@ -1,5 +1,34 @@
-﻿@{
+﻿@using Group5ScrumProject
+
+@model IEnumerable<Group5ScrumProject.User>
+
+@{
     ViewBag.Title = "AdminUserDelete";
 }
 
-<h2>AdminUserDelete</h2>
+@using (Html.BeginForm("AdminUserDelete", "Home", FormMethod.Post))
+{
+    <h2>Ta bort användare</h2>
+
+    <table>
+        @foreach (var item in ViewBag.UserDel)
+        {
+            <tr>
+                <td>Användare: @item.sUserLoginName
+                </td>
+                <td>
+                    @Html.ActionLink("Ta bort", "AdminUserDelete", new { id = item.iUserId })
+                </td>
+
+            </tr>
+        }
+    </table>
+    <br />
+    <br />
+    <input type="submit" value="Bekräfta borttagning" />
+    <br />
+    <br />
+    @Html.ActionLink("Tillbaka", "AdminViewSettings")
+
+
+}

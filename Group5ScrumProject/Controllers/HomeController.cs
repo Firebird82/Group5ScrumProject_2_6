@@ -11,7 +11,7 @@ using System.IO;
 
 
 namespace Group5ScrumProject.Controllers
-{
+{//
     public class HomeController : Controller
     {
         DataClasses1DataContext db = new DataClasses1DataContext();
@@ -123,6 +123,9 @@ namespace Group5ScrumProject.Controllers
             var v = (from m in db.tbUsers
                      where m.iUserId == id
                      select m).FirstOrDefault();
+
+
+
             return View("Edit", v);
         }
         [HttpPost]
@@ -141,7 +144,7 @@ namespace Group5ScrumProject.Controllers
                     us.sUserLoginName = users.sUserLoginName;
                     us.sUserPassword = users.sUserPassword;
                     us.sClass = users.sClass;
-
+                    us.iBlocked = users.iBlocked;
                 }
 
                 db.SubmitChanges();
@@ -149,13 +152,29 @@ namespace Group5ScrumProject.Controllers
             return View("AdminViewSettings");
         }
 
-
+        [HttpGet]
         public ActionResult AdminUserDelete()
         {
-
-
+            var UserDel = db.tbUsers;
+            ViewBag.UserDel = UserDel;
             return View();
         }
+
+        [HttpPost]
+        public ActionResult AdminUserDelete(string id)
+        {
+
+            var User2Delete = (from f in db.tbUsers
+                               where f.iUserId == int.Parse(id)
+                               select f).FirstOrDefault();
+
+            db.tbUsers.DeleteOnSubmit(User2Delete);
+            db.SubmitChanges();
+
+
+            return View("AdminViewSettings");
+        }
+
 
         public ActionResult AdminUserBlock()
         {
