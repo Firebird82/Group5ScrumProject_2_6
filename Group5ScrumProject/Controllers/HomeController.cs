@@ -81,7 +81,6 @@ namespace Group5ScrumProject.Controllers
             if (ModelState.IsValid)
             {
                 user.iBlocked = 0;
-                user.iActivBooking = 0;
 
                 db.tbUsers.InsertOnSubmit(user);
                 db.SubmitChanges();
@@ -245,12 +244,12 @@ namespace Group5ScrumProject.Controllers
                     @ViewBag.status = "Du måste ange ett rumsnamn.";
                 }
                 if (!status)
-                foreach (var room in db.tbRooms)
-                    if (room.sRoomName.ToLower() == RoomName.ToLower() && room.iRoomId != int.Parse(id))
-                    {
-                    status = true;
-                    @ViewBag.status = "Rummet finns redan, Välj ett annat namn.";
-                    }
+                    foreach (var room in db.tbRooms)
+                        if (room.sRoomName.ToLower() == RoomName.ToLower() && room.iRoomId != int.Parse(id))
+                        {
+                            status = true;
+                            @ViewBag.status = "Rummet finns redan, Välj ett annat namn.";
+                        }
                 if (!status)
                 {
                     Chairs = (String.IsNullOrEmpty(Chairs) ? "0" : Chairs);
@@ -423,7 +422,6 @@ namespace Group5ScrumProject.Controllers
                         user.sUserPassword = _values[2];            //Password in 3rd place
                         user.iUserRole = 1;                         //Standard value to make all added users "User" in the database
                         user.iBlocked = 0;                          //Standard value so that the user is not blocked from start
-                        user.iActivBooking = 0;                     //Standard value that the user dont have any bookings to start with
                         user.sClass = _values[3];                   //4th place in the file is info about what class the user goes in
                     };
 
