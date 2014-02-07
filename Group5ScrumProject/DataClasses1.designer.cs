@@ -389,8 +389,6 @@ namespace Group5ScrumProject
 		
 		private System.Nullable<int> _iBlocked;
 		
-		private System.Nullable<int> _iActivBooking;
-		
 		private string _sClass;
 		
 		private EntitySet<tbBooking> _tbBookings;
@@ -413,8 +411,6 @@ namespace Group5ScrumProject
     partial void OniUserRoleChanged();
     partial void OniBlockedChanging(System.Nullable<int> value);
     partial void OniBlockedChanged();
-    partial void OniActivBookingChanging(System.Nullable<int> value);
-    partial void OniActivBookingChanged();
     partial void OnsClassChanging(string value);
     partial void OnsClassChanged();
     #endregion
@@ -546,26 +542,6 @@ namespace Group5ScrumProject
 					this._iBlocked = value;
 					this.SendPropertyChanged("iBlocked");
 					this.OniBlockedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_iActivBooking", DbType="Int")]
-		public System.Nullable<int> iActivBooking
-		{
-			get
-			{
-				return this._iActivBooking;
-			}
-			set
-			{
-				if ((this._iActivBooking != value))
-				{
-					this.OniActivBookingChanging(value);
-					this.SendPropertyChanging();
-					this._iActivBooking = value;
-					this.SendPropertyChanged("iActivBooking");
-					this.OniActivBookingChanged();
 				}
 			}
 		}
