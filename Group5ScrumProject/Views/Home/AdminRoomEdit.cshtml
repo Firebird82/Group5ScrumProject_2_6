@@ -1,5 +1,80 @@
-﻿@{
-    ViewBag.Title = "AdminRoomEdit";
+﻿@using System.ComponentModel.DataAnnotations.Schema
+@using System.Drawing
+@using System.Runtime.Remoting.Messaging
+@using System.ServiceModel.Web
+@using System.Web.Caching
+@using System.Web.UI.WebControls
+@using Microsoft.Ajax.Utilities
+@model List<Group5ScrumProject.Models.Room>
+@using Group5ScrumProject
+@using Microsoft.SqlServer.Server
+
+@{
+    ViewBag.Title = "Uppdatera rum";
+}
+@{  // Något meddelande till användaren ?
+    if (ViewBag.message)
+    {
+        @:<h2>@ViewBag.status</h2>
+    }
+}
+<h2>Uppdatera rum</h2>
+@{
+    WebGrid grid = new WebGrid(Model, rowsPerPage: ViewBag.nrOfRows);
 }
 
-<h2>AdminRoomEdit</h2>
+@{ // http://mvc-tutorials.com/asp-net-mvc-webgrid-with-paging-sorting-edit-and-delete-commands
+
+    Html.BeginForm("AdminRoomEditUpdate", "Home");
+    @grid.GetHtml(
+        columns: grid.Columns(
+            grid.Column("RoomName", header: "Namn"),
+            grid.Column("Chairs", header: "Stolar"),
+            grid.Column("RoomDescription", header: "Rumsbeskrivning"),
+            grid.Column("Uppdatera", format: (item) => new HtmlString(
+                "<a href=\"Javascript:$('#id').val('" + item.RoomId + "');" +
+                "$('#roomToChange').html('Uppdatera rum: <b>" + item.RoomName + "</b>');" +
+                "$('#RoomName').val('" + item.RoomName + "');" +
+                "$('#expand-editdiv').slideToggle();\" style='color: #000'>Uppdatera</a>"
+                ), header: " ")
+            ),
+        tableStyle: "webgrid",
+        headerStyle: "webgrid-header",
+        footerStyle: "webgrid-footer",
+        alternatingRowStyle: "webgrid-alternating-row",
+        selectedRowStyle: "webgrid-selected-row",
+        rowStyle: "webgrid-row-style"
+        )
+    <br/>
+    <div id="expand-editdiv" style="display: none">
+        <div id="roomToChange"><b>Uppdatera rum: </b></div>
+        @Html.TextBox("id")
+        <div class="marginLeft">
+            Namn
+            <br/>
+            @Html.TextBox("RoomName")
+        </div>
+        <div class="marginLeft">
+            Stolar
+            <br/>
+            @Html.TextBox("Chairs")
+        </div>
+        <div class="marginLeft">
+            Beskrivning
+            <br/>
+            @Html.TextBox("RoomDescription")
+        </div>
+        <div class="clearBoth">
+            <br/>
+            <input type="submit" value="Uppdatera"/>
+        </div>
+    </div>
+    <br/>
+    @Html.ActionLink("Tillbaka", "AdminViewSettings")
+    <script>
+        $("#id").css("display", "none");
+        $('#RoomName').attr("readonly", "true")
+            .css("background-color", "gray");
+    </script>
+}
+

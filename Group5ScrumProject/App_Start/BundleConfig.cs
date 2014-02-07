@@ -30,7 +30,8 @@ namespace Group5ScrumProject
                         "~/Scripts/modernizr-*"));
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/site.css",
-                "~/Content/webgrid.css"
+                "~/Content/webgrid.css",
+                "~/Content/AdminRoomEdit.css"
                 ));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(

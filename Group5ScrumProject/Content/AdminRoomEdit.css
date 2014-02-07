@@ -1,0 +1,11 @@
+﻿body {
+}
+
+.marginLeft {
+    float: left;
+    margin-right: 10px;
+}
+
+.clearBoth {
+    clear: both;
+}

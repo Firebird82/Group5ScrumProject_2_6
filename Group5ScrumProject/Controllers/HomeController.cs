@@ -217,10 +217,45 @@ namespace Group5ScrumProject.Controllers
             return View("AdminRoomAdd", rooms);
         }
 
-
         public ActionResult AdminRoomEdit()
         {
-            return View();
+            ViewBag.nrOfRows = db.tbRooms.Count(); // Skickar med antal rader till webgrid
+            ViewBag.message = false;
+            return View("AdminRoomEdit", getRooms());
+        }
+        public ActionResult AdminRoomEditUpdate(string id, string RoomName, string Chairs, string RoomDescription)
+        {
+            bool status = false; // Meddelande indikator
+            ViewBag.nrOfRows = db.tbRooms.Count(); // Skickar med antal rader till webgrid
+            if (RoomName != null)
+            {
+                // felhantering
+                if (RoomName == "")
+                {
+                    status = true;
+                    @ViewBag.status = "Du måste ange ett rumsnamn.";
+                }
+                if (!status)
+                foreach (var room in db.tbRooms)
+                    if (room.sRoomName.ToLower() == RoomName.ToLower() && room.iRoomId != int.Parse(id))
+                    {
+                    status = true;
+                    @ViewBag.status = "Rummet finns redan, Välj ett annat namn.";
+                    }
+                if (!status)
+                {
+                    Chairs = (String.IsNullOrEmpty(Chairs) ? "0" : Chairs);
+                    RoomDescription = (String.IsNullOrEmpty(RoomDescription) ? "" : RoomDescription);
+
+                    var rum = db.tbRooms.Where(r => r.iRoomId == int.Parse(id)).FirstOrDefault();
+                    rum.sRoomName = RoomName;
+                    rum.iRoomChairs = int.Parse(Chairs);
+                    rum.sRoomDesc = RoomDescription;
+                    db.SubmitChanges();
+                }
+            }
+            ViewBag.message = status; // Säg till frontend om vi har meddelande till användaren.
+            return View("AdminRoomEdit", getRooms());
         }
 
         [HttpGet]
@@ -232,6 +267,7 @@ namespace Group5ScrumProject.Controllers
 
             return View();
         }
+
         [HttpPost]
         public ActionResult AdminRoomDelete(string id)
         {
