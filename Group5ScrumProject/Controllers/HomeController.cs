@@ -78,8 +78,6 @@ namespace Group5ScrumProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AdminUserAdd(tbUser user)
         {
-            ViewBag.Message = "";
-
             ViewBag.iUserRole = new SelectList(db.tbRoles, "iRoleID", "sRoleType");
             try
             {
@@ -132,10 +130,9 @@ namespace Group5ScrumProject.Controllers
                      where m.iUserId == id
                      select m).FirstOrDefault();
 
-
-
             return View("Edit", v);
         }
+
         [HttpPost]
         public ActionResult Edit(tbUser users)
         {
@@ -178,22 +175,28 @@ namespace Group5ScrumProject.Controllers
         }
 
         [HttpPost]
-        public ActionResult AdminUserDelete(string id)
+        public ActionResult AdminUserDelete(int id)
         {
             try
             {
                 var User2Delete = (from f in db.tbUsers
-                                   where f.iUserId == int.Parse(id)
+                                   where f.iUserId == id
                                    select f).FirstOrDefault();
 
                 db.tbUsers.DeleteOnSubmit(User2Delete);
                 db.SubmitChanges();
+
+                ViewBag.Message = "Du har tagit bort " +  User2Delete.sUserName;
             }
             catch
             {
                 return View("AdminViewSettings");
             }
-            return View("AdminViewSettings");
+
+            var UserDel = db.tbUsers;
+            ViewBag.UserDel = UserDel;
+
+            return View("AdminUserDelete");
         }
 
         public ActionResult AdminUserBlock()
