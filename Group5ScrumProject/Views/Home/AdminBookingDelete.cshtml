@@ -1,6 +1,16 @@
-﻿@{
+﻿@using Group5ScrumProject
+
+@{
     ViewBag.Title = "AdminBookingDelete";
 }
 
 <h2>AdminBookingDelete</h2>
+
+<select id="ddl">
+    @foreach (tbBooking booking in ViewBag.Bookings)
+    {
+        <OPTION value="@booking.iRumId" SELECTED>Rum:@booking.iRumId, @booking.iBookingID, @booking.dtDateDay.ToString("MM-dd"), @booking.dtTimeStart.Hours:00 till @booking.dtTimeEnd.Hours:00 </option>
+    }
+    <option value="Välj Filter" selected>Välj Filter</option>
+</select>
 
