@@ -101,9 +101,6 @@ namespace Group5ScrumProject.Controllers
         public List<tbUser> Searching = new List<tbUser>();
         public ActionResult AdminUserEdit(string searchTerm = null)
         {
-
-
-
             {
                 Searching = (from m in db.tbUsers
                              where
@@ -117,13 +114,9 @@ namespace Group5ScrumProject.Controllers
 
                     return PartialView("_UsersEdit", Searching);
                 }
-
-
             }
 
             return View("AdminUserEdit", Searching);
-
-
         }
         [HttpGet]
         public ActionResult Edit(int id = 0)
@@ -172,7 +165,7 @@ namespace Group5ScrumProject.Controllers
             catch (Exception)
             {
                 ViewBag.Message = "Klicka på den användare du vill ta bort";
-                return View ();
+                return View();
             }
 
         }
@@ -188,18 +181,13 @@ namespace Group5ScrumProject.Controllers
 
                 db.tbUsers.DeleteOnSubmit(User2Delete);
                 db.SubmitChanges();
-
-
             }
             catch
             {
-
-                return View ("AdminViewSettings");
+                return View("AdminViewSettings");
             }
-
             return View("AdminViewSettings");
         }
-
 
         public ActionResult AdminUserBlock()
         {
@@ -323,7 +311,7 @@ namespace Group5ScrumProject.Controllers
             }
             catch (Exception)
             {
-                
+
                 return View("AdminViewSettings");
             }
 
@@ -346,7 +334,6 @@ namespace Group5ScrumProject.Controllers
             {
                 return View("AdminViewSettings");
             }
-
         }
 
         [HttpGet]
@@ -374,6 +361,7 @@ namespace Group5ScrumProject.Controllers
                 if (Session["bookingConfirmed"] == null || (string)Session["bookingConfirmed"] == "")
                 {
                     ViewBag.BookingMessage = "";
+
                 }
                 else
                 {
@@ -381,7 +369,7 @@ namespace Group5ScrumProject.Controllers
                     Session["bookingConfirmed"] = "";
                 }
             }
-        
+            ViewBag.Date = DateTime.Today.ToString("yyyy/MM/dd");
             return View();
         }
         [HttpPost]
