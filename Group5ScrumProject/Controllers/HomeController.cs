@@ -73,10 +73,13 @@ namespace Group5ScrumProject.Controllers
             ViewBag.iUserRole = new SelectList(db.tbRoles, "iRoleID", "sRoleType");
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AdminUserAdd(tbUser user)
         {
+            ViewBag.Message = "";
+
             ViewBag.iUserRole = new SelectList(db.tbRoles, "iRoleID", "sRoleType");
             try
             {
@@ -86,12 +89,16 @@ namespace Group5ScrumProject.Controllers
 
                     db.tbUsers.InsertOnSubmit(user);
                     db.SubmitChanges();
-                    return RedirectToAction("AdminViewSettings");
+
+                    ViewBag.Message = "Du har lagt till " + user.sUserName;
+                    ViewBag.iUserRole = new SelectList(db.tbRoles, "iRoleID", "sRoleType");
+                    ModelState.Clear();
+                    return View("AdminUserAdd");
                 }
             }
             catch (Exception)
             {
-
+                ViewBag.Message = "Va en goding och fyll i alla fält";
                 return View();
             }
 
