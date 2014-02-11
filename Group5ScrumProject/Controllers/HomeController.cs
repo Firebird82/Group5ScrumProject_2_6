@@ -512,39 +512,58 @@ namespace Group5ScrumProject.Controllers
 
         public ActionResult UploadFile(string Submit) //David
         {
-            // Loopen is only used onces but will be good later when we can upload multiple files
-            foreach (string upload in Request.Files)
+            int loops = 0;
+
+            try
             {
-                string path = AppDomain.CurrentDomain.BaseDirectory + "uploads/";       //Sets a path to save the uploaded file to a directory on the server
-                string filename = Path.GetFileName(Request.Files[upload].FileName);     //Gets the name of the uploaded file
-                Request.Files[upload].SaveAs(Path.Combine(path, filename));             //Saves the uploaded file to path folder
-
-                System.Text.Encoding enc = System.Text.Encoding.Default;                //Sets the Encoding of the file to make special characters like åäö "possible"
-                StreamReader sr = new StreamReader(path + filename, enc);               //Instanciates a streamReader that wil read the file line by line
-
-                string strline = "";                                //Will store each line found in the file
-                string[] _values = null;                            //Will store each entry that is "," separated in the list
-                while (!sr.EndOfStream)                             //While we have more lines in the file we will keep going troung the next line untill there are no more lines in the file
+                foreach (string upload in Request.Files)
                 {
-                    strline = sr.ReadLine();                        //Gets the first line in the file with StreamReader
-                    _values = strline.Split(',');                   //Separates the line on "," in to a list
+                    string path = AppDomain.CurrentDomain.BaseDirectory + "uploads/";       //Sets a path to save the uploaded file to a directory on the server
+                    string filename = Path.GetFileName(Request.Files[upload].FileName);     //Gets the name of the uploaded file
+                    Request.Files[upload].SaveAs(Path.Combine(path, filename));             //Saves the uploaded file to path folder
 
-                    tbUser user = new tbUser();                     //A tbUser database object is created to store what we have in the file 
+                    System.Text.Encoding enc = System.Text.Encoding.Default;                //Sets the Encoding of the file to make special characters like åäö "possible"
+                    StreamReader sr = new StreamReader(path + filename, enc);               //Instanciates a streamReader that wil read the file line by line
+
+                    string strline = "";                                //Will store each line found in the file
+                    string[] _values = null;                            //Will store each entry that is "," separated in the list
+
+                    while (!sr.EndOfStream)                            //While we have more lines in the file we will keep going troung the next line untill there are no more lines in the file
                     {
-                        user.sUserName = _values[0];                //Name is the first entry in the file on each line
-                        user.sUserLoginName = _values[1];           //Login name is in second place in the file
-                        user.sUserPassword = _values[2];            //Password in 3rd place
-                        user.iUserRole = 1;                         //Standard value to make all added users "User" in the database
-                        user.iBlocked = 0;                          //Standard value so that the user is not blocked from start
-                        user.sClass = _values[3];                   //4th place in the file is info about what class the user goes in
-                    };
+                        loops = loops + 1;
+                        strline = sr.ReadLine();                        //Gets the first line in the file with StreamReader
+                        _values = strline.Split(',');                   //Separates the line on "," in to a list
 
-                    db.tbUsers.InsertOnSubmit(user);                //Save to database
-                    db.SubmitChanges();                             //Save to database
+                        tbUser user = new tbUser();                     //A tbUser database object is created to store what we have in the file 
+                        {
+                            user.sUserName = _values[0];                //Name is the first entry in the file on each line
+                            user.sUserLoginName = _values[1];           //Login name is in second place in the file
+                            user.sUserPassword = _values[2];            //Password in 3rd place
+                            user.iUserRole = 1;                         //Standard value to make all added users "User" in the database
+                            user.iBlocked = 0;                          //Standard value so that the user is not blocked from start
+                            user.sClass = _values[3];                   //4th place in the file is info about what class the user goes in
+                        };
+
+                        db.tbUsers.InsertOnSubmit(user);                //Save to database
+                        db.SubmitChanges();                             //Save to database
+                    }
+                    sr.Close();                                         //Close StreamReader
                 }
-                sr.Close();                                         //Close StreamReader
             }
+            catch (Exception)
+            {
+                ViewBag.Message = "Du har laddat upp en fil som inte funkar :(";
+                
+                return View();
+            }
+            // Loopen is only used onces but will be good later when we can upload multiple files
+            
 
+            if (loops != 0)
+            {
+                ViewBag.Message = "Du har lagt till " + loops + " personer";
+            }
+            
             return View();
         }
     }
