@@ -26,7 +26,11 @@ namespace Group5ScrumProject.Controllers
             var allRooms = db.tbRooms;
             ViewBag.Rooms = allRooms;
             ViewBag.User = Session["User"];
-            return View();
+
+            ViewBag.nrOfRows = 5;
+            ViewBag.Rooms = getRooms();
+            return View("Index", getRooms());
+            
         }
 
         public ActionResult Login(string tbxName, string tbxPassword)
@@ -214,6 +218,10 @@ namespace Group5ScrumProject.Controllers
         {
             List<Room> rooms = new List<Room>();
             db.tbRooms.ToList().ForEach(room => { rooms.Add(new Room(room)); });
+
+            //rooms = (from f in db.tbRooms
+            //         select new Room(f)).ToList();
+
             return rooms;
         }
         public ActionResult AdminRoomAdd(string Namn, string Chairs, string Rumsbeskrivning)
@@ -358,38 +366,49 @@ namespace Group5ScrumProject.Controllers
         }
 
         [HttpGet]
-        public ActionResult AdminBookingAdd()
+        public ActionResult AdminBookingAdd(int time = 0, string date = null)
         {
+            IEnumerable<SelectListItem> rooms = db.tbRooms.Select(x => new SelectListItem { Text = x.sRoomName, Value = x.iRoomId.ToString() });
+
+            List<SelectListItem> hours = new List<SelectListItem> 
+                { 
+                    new SelectListItem { Text = "09:00", Value = "09:00" },
+                    new SelectListItem { Text = "10:00", Value = "10:00" },
+                    new SelectListItem { Text = "11:00", Value = "11:00" },
+                    new SelectListItem { Text = "12:00", Value = "12:00" },
+                    new SelectListItem { Text = "13:00", Value = "13:00" },
+                    new SelectListItem { Text = "14:00", Value = "14:00" },
+                    new SelectListItem { Text = "15:00", Value = "15:00" },
+                    new SelectListItem { Text = "16:00", Value = "16:00" } 
+                };
+
+            if (Session["bookingConfirmed"] == null || (string)Session["bookingConfirmed"] == "")
             {
-                IEnumerable<SelectListItem> rooms = db.tbRooms.Select(x => new SelectListItem { Text = x.sRoomName, Value = x.iRoomId.ToString() });
-
-                List<SelectListItem> hours = new List<SelectListItem> 
-            { 
-            new SelectListItem { Text = "09:00", Value = "09:00" }, 
-            new SelectListItem { Text = "10:00", Value = "10:00" }, 
-            new SelectListItem { Text = "11:00", Value = "11:00" } ,
-            new SelectListItem { Text = "12:00", Value = "12:00" } ,
-            new SelectListItem { Text = "13:00", Value = "13:00" } ,
-            new SelectListItem { Text = "14:00", Value = "14:00" } ,
-            new SelectListItem { Text = "15:00", Value = "15:00" } ,
-            new SelectListItem { Text = "16:00", Value = "16:00" } 
-            };
-
-                ViewBag.ddlRooms = rooms;
-                ViewBag.ddlTimeStart = (IEnumerable<SelectListItem>)hours;
-                ViewBag.ddlTimeEnd = (IEnumerable<SelectListItem>)hours;
-
-                if (Session["bookingConfirmed"] == null || (string)Session["bookingConfirmed"] == "")
-                {
-                    ViewBag.BookingMessage = Session["ErrorMessage"];
-                }
-                else
-                {
-                    ViewBag.BookingMessage = "Bokning genomförd";
-                    Session["bookingConfirmed"] = "";
-                    Session["ErrorMessage"] = "";
-                }
+                ViewBag.BookingMessage = Session["ErrorMessage"];
             }
+            else
+            {
+                ViewBag.BookingMessage = "Bokning genomförd";
+                Session["bookingConfirmed"] = "";
+                Session["ErrorMessage"] = "";
+            }
+
+            if (time != 0 && date != null)
+            {
+                //Plats för kod som begränsar användaren.....
+
+                //ViewBag.ddlRooms = rooms;
+                //ViewBag.ddlTimeStart = (IEnumerable<SelectListItem>)hours;
+                //ViewBag.ddlTimeEnd = (IEnumerable<SelectListItem>)hours;
+
+                //ViewBag.Date = DateTime.Today.ToString("yyyy/MM/dd");
+                //return View();
+            }
+
+            ViewBag.ddlRooms = rooms;
+            ViewBag.ddlTimeStart = (IEnumerable<SelectListItem>)hours;
+            ViewBag.ddlTimeEnd = (IEnumerable<SelectListItem>)hours;
+
             ViewBag.Date = DateTime.Today.ToString("yyyy/MM/dd");
             return View();
         }
@@ -430,6 +449,11 @@ namespace Group5ScrumProject.Controllers
 
 
             tbUser u = (tbUser)Session["User"];
+
+            if (Session["User"] == null)
+            {
+                RedirectToAction("Login");
+            }
 
             tbBooking newBooking = new tbBooking
             {
