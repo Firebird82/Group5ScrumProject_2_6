@@ -30,7 +30,7 @@ namespace Group5ScrumProject.Controllers
             ViewBag.nrOfRows = 5;
             ViewBag.Rooms = getRooms();
             return View("Index", getRooms());
-            
+
         }
 
         public ActionResult Login(string tbxName, string tbxPassword)
@@ -149,16 +149,16 @@ namespace Group5ScrumProject.Controllers
                 var user = (from m in db.tbUsers
                             where m.iUserId == users.iUserId
                             select m).FirstOrDefault();
-                
+
                 user.sUserName = users.sUserName;
                 user.sUserLoginName = users.sUserLoginName;
                 user.sUserPassword = users.sUserPassword;
                 user.sClass = users.sClass;
                 user.iBlocked = users.iBlocked;
-                
+
                 db.SubmitChanges();
 
-                
+
                 ViewBag.Message = "Dina ändringar är sparade";
                 return View("Edit", v);
             }
@@ -196,7 +196,7 @@ namespace Group5ScrumProject.Controllers
                 db.tbUsers.DeleteOnSubmit(User2Delete);
                 db.SubmitChanges();
 
-                ViewBag.Message = "Du har tagit bort " +  User2Delete.sUserName;
+                ViewBag.Message = "Du har tagit bort " + User2Delete.sUserName;
             }
             catch
             {
@@ -355,7 +355,7 @@ namespace Group5ScrumProject.Controllers
                 db.tbRooms.DeleteOnSubmit(Room2Delete);
                 db.SubmitChanges();
 
-                ViewBag.Message = "Rum " + Room2Delete.sRoomName +" är borttaget";
+                ViewBag.Message = "Rum " + Room2Delete.sRoomName + " är borttaget";
                 return View();
             }
             catch
@@ -366,11 +366,13 @@ namespace Group5ScrumProject.Controllers
         }
 
         [HttpGet]
-        public ActionResult AdminBookingAdd(int time = 0, string date = null)
+        public ActionResult AdminBookingAdd(string time = "", string date = "", string roomId = "")
         {
+            //Skriver ut alla rum
             IEnumerable<SelectListItem> rooms = db.tbRooms.Select(x => new SelectListItem { Text = x.sRoomName, Value = x.iRoomId.ToString() });
 
-            List<SelectListItem> hours = new List<SelectListItem> 
+            //Skriver ut en lista med tider
+            IEnumerable<SelectListItem> hours = new List<SelectListItem> 
                 { 
                     new SelectListItem { Text = "09:00", Value = "09:00" },
                     new SelectListItem { Text = "10:00", Value = "10:00" },
@@ -381,6 +383,18 @@ namespace Group5ScrumProject.Controllers
                     new SelectListItem { Text = "15:00", Value = "15:00" },
                     new SelectListItem { Text = "16:00", Value = "16:00" } 
                 };
+
+            //Skriver ut endast det valda rummet. Inga tider innan vald tid visas
+            if (roomId != "" && time != "" && date != "")
+            {
+                rooms = rooms.Where(r => r.Value == roomId);
+                hours = hours.Where(h => Convert.ToDateTime(h.Value) >= Convert.ToDateTime(time));
+                ViewBag.Date = date;
+            }
+            else
+            {
+                ViewBag.Date = DateTime.Today.ToString("yyyy/MM/dd");
+            }
 
             if (Session["bookingConfirmed"] == null || (string)Session["bookingConfirmed"] == "")
             {
@@ -393,28 +407,17 @@ namespace Group5ScrumProject.Controllers
                 Session["ErrorMessage"] = "";
             }
 
-            if (time != 0 && date != null)
-            {
-                //Plats för kod som begränsar användaren.....
-
-                //ViewBag.ddlRooms = rooms;
-                //ViewBag.ddlTimeStart = (IEnumerable<SelectListItem>)hours;
-                //ViewBag.ddlTimeEnd = (IEnumerable<SelectListItem>)hours;
-
-                //ViewBag.Date = DateTime.Today.ToString("yyyy/MM/dd");
-                //return View();
-            }
-
             ViewBag.ddlRooms = rooms;
             ViewBag.ddlTimeStart = (IEnumerable<SelectListItem>)hours;
             ViewBag.ddlTimeEnd = (IEnumerable<SelectListItem>)hours;
 
-            ViewBag.Date = DateTime.Today.ToString("yyyy/MM/dd");
             return View();
         }
         [HttpPost]
         public ActionResult AdminBookingAdd(string ddlRooms, DateTime day, TimeSpan ddlTimeStart, TimeSpan ddlTimeEnd, bool recurrent)
         {
+            tbUser u = (tbUser)Session["User"];
+
             if (ddlTimeStart.Hours == ddlTimeEnd.Hours)
             {
                 Session["ErrorMessage"] = "Starttid och sluttid kan ej vara samma tid.";
@@ -423,7 +426,24 @@ namespace Group5ScrumProject.Controllers
             {
                 Session["ErrorMessage"] = "Sluttid kan inte inträffa innan starttid.";
             }
-            else
+            else if (day.DayOfYear < DateTime.Today.DayOfYear)  //Om användaren försöker boka bakåt i tiden
+            {
+                Session["ErrorMessage"] = "Du kan endast boka tider framåt i tiden.";
+            }
+            else if (((ddlTimeEnd.Hours - ddlTimeStart.Hours) > 4) && u.iUserRole == 2) //Om en användare försöker boka mer än 4 timmar
+            {
+                Session["ErrorMessage"] = "Du kan endast boka 4 timmar åt gången.";
+            }
+            else if ((day.DayOfYear - DateTime.Today.DayOfYear) > 7) //Om användaren försöker boka en tid längre fram i tiden än 7 dagar
+            {
+                Session["ErrorMessage"] = "Du kan endast boka en vecka fram i tiden.";
+            }
+            else if (db.tbBookings.Where(b => b.iUserId == u.iUserId).Where(b => b.dtDateDay.DayOfYear >= DateTime.Today.DayOfYear).FirstOrDefault() != null) //Om användaren har en befintlig bokning
+            {
+                Session["ErrorMessage"] = "Du har redan en aktiv bokning.";
+            }
+            else  //Bokning genomförs
+
             {
                 if (recurrent == true)
                 {
@@ -445,9 +465,6 @@ namespace Group5ScrumProject.Controllers
         //METOD FÖR ATT LÄGGA TILL BOKNING
         public void AddBookingMethod(string ddlRooms, DateTime day, TimeSpan ddlTimeStart, TimeSpan ddlTimeEnd)
         {
-            //Lägg in validation så att timestart inte är större än timeend och tvärtom
-
-
             tbUser u = (tbUser)Session["User"];
 
             if (Session["User"] == null)
@@ -563,7 +580,7 @@ namespace Group5ScrumProject.Controllers
                             user.sUserName = _values[0];                //Name is the first entry in the file on each line
                             user.sUserLoginName = _values[1];           //Login name is in second place in the file
                             user.sUserPassword = _values[2];            //Password in 3rd place
-                            user.iUserRole = 1;                         //Standard value to make all added users "User" in the database
+                            user.iUserRole = 2;                         //Standard value to make all added users "User" in the database
                             user.iBlocked = 0;                          //Standard value so that the user is not blocked from start
                             user.sClass = _values[3];                   //4th place in the file is info about what class the user goes in
                         };
@@ -577,17 +594,17 @@ namespace Group5ScrumProject.Controllers
             catch (Exception)
             {
                 ViewBag.Message = "Du har laddat upp en fil som inte funkar :(";
-                
+
                 return View();
             }
             // Loopen is only used onces but will be good later when we can upload multiple files
-            
+
 
             if (loops != 0)
             {
                 ViewBag.Message = "Du har lagt till " + loops + " personer";
             }
-            
+
             return View();
         }
     }
