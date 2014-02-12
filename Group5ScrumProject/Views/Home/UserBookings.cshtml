@@ -27,7 +27,9 @@
                         <td>@a.dtDateDay.ToShortDateString()</td>
                         <td>@string.Format("{0:00}:{1:00}", a.dtTimeStart.Hours, a.dtTimeStart.Minutes)</td>
                         <td>@string.Format("{0:00}:{1:00}", a.dtTimeEnd.Hours, a.dtTimeEnd.Minutes)</td>
-                        
+                        <td>
+                            @Html.ActionLink("Ta bort", "UserBookings", new { id = a.iBookingID })
+                        </td>
                     </tr>
                 }
             }
