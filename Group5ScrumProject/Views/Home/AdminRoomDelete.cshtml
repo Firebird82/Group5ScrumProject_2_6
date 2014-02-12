@@ -1,38 +1,30 @@
 ﻿@using Group5ScrumProject
-
 @model IEnumerable<Group5ScrumProject.Models.Room>
 
 @{
     ViewBag.Title = "AdminRoomDelete";
 }
 
-
 <h2>Ta bort rum</h2>
 @using (Html.BeginForm("AdminRoomDelete", "Home", FormMethod.Post))
 {    
 <table>
-
     @foreach (var item in ViewBag.Rooms)
-{
+    {
         <tr>
             <td>
-        Rum: @item.sRoomName
-                </td>
+                Rum: @item.sRoomName
+            </td>
             <td>
                 @Html.ActionLink("Ta bort", "AdminRoomDelete", new { id = item.iRoomId})
-
             </td>
-
-            </tr>
+        </tr>
     } 
 
-
-
 </table>
-    <br />
-    <br />
-        <input type="submit" value="Bekräfta borttagning" />
-    <br />
-    <br />
+    <br /><br />
+    <input type="submit" value="Bekräfta borttagning" /> <br />
+    @ViewBag.Message    
+    <br /><br />
 }
 @Html.ActionLink("Tillbaka","AdminViewSettings")

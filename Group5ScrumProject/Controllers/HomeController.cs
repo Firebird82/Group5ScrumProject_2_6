@@ -26,7 +26,11 @@ namespace Group5ScrumProject.Controllers
             var allRooms = db.tbRooms;
             ViewBag.Rooms = allRooms;
             ViewBag.User = Session["User"];
-            return View();
+
+            ViewBag.nrOfRows = 5;
+            ViewBag.Rooms = getRooms();
+            return View("Index", getRooms());
+            
         }
 
         public ActionResult Login(string tbxName, string tbxPassword)
@@ -73,6 +77,7 @@ namespace Group5ScrumProject.Controllers
             ViewBag.iUserRole = new SelectList(db.tbRoles, "iRoleID", "sRoleType");
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AdminUserAdd(tbUser user)
@@ -86,12 +91,16 @@ namespace Group5ScrumProject.Controllers
 
                     db.tbUsers.InsertOnSubmit(user);
                     db.SubmitChanges();
-                    return RedirectToAction("AdminViewSettings");
+
+                    ViewBag.Message = "Du har lagt till " + user.sUserName;
+                    ViewBag.iUserRole = new SelectList(db.tbRoles, "iRoleID", "sRoleType");
+                    ModelState.Clear();
+                    return View("AdminUserAdd");
                 }
             }
             catch (Exception)
             {
-
+                ViewBag.Message = "Va en goding och fyll i alla fält";
                 return View();
             }
 
@@ -119,38 +128,43 @@ namespace Group5ScrumProject.Controllers
             return View("AdminUserEdit", Searching);
         }
         [HttpGet]
-        public ActionResult Edit(int id = 0)
+        public ActionResult Edit(int id)
         {
             var v = (from m in db.tbUsers
                      where m.iUserId == id
                      select m).FirstOrDefault();
 
-
-
             return View("Edit", v);
         }
+
         [HttpPost]
-        public ActionResult Edit(tbUser users)
+        public ActionResult Edit(tbUser users, int id)
         {
+            var v = (from m in db.tbUsers
+                     where m.iUserId == id
+                     select m).FirstOrDefault();
+
             if (users.sUserName != null && users.sUserLoginName != null && users.sUserPassword != null)
             {
-
                 var user = (from m in db.tbUsers
-                            where
-                            m.iUserId == users.iUserId
-                            select m);
-                foreach (var us in user)
-                {
-                    us.sUserName = users.sUserName;
-                    us.sUserLoginName = users.sUserLoginName;
-                    us.sUserPassword = users.sUserPassword;
-                    us.sClass = users.sClass;
-                    us.iBlocked = users.iBlocked;
-                }
-
+                            where m.iUserId == users.iUserId
+                            select m).FirstOrDefault();
+                
+                user.sUserName = users.sUserName;
+                user.sUserLoginName = users.sUserLoginName;
+                user.sUserPassword = users.sUserPassword;
+                user.sClass = users.sClass;
+                user.iBlocked = users.iBlocked;
+                
                 db.SubmitChanges();
+
+                
+                ViewBag.Message = "Dina ändringar är sparade";
+                return View("Edit", v);
             }
-            return View("AdminViewSettings");
+
+            ViewBag.Message = "Vissa fält är tomma och måste fyllas i";
+            return View("Edit", v);
         }
 
         [HttpGet]
@@ -171,22 +185,28 @@ namespace Group5ScrumProject.Controllers
         }
 
         [HttpPost]
-        public ActionResult AdminUserDelete(string id)
+        public ActionResult AdminUserDelete(int id)
         {
             try
             {
                 var User2Delete = (from f in db.tbUsers
-                                   where f.iUserId == int.Parse(id)
+                                   where f.iUserId == id
                                    select f).FirstOrDefault();
 
                 db.tbUsers.DeleteOnSubmit(User2Delete);
                 db.SubmitChanges();
+
+                ViewBag.Message = "Du har tagit bort " +  User2Delete.sUserName;
             }
             catch
             {
                 return View("AdminViewSettings");
             }
-            return View("AdminViewSettings");
+
+            var UserDel = db.tbUsers;
+            ViewBag.UserDel = UserDel;
+
+            return View("AdminUserDelete");
         }
 
         public ActionResult AdminUserBlock()
@@ -198,6 +218,10 @@ namespace Group5ScrumProject.Controllers
         {
             List<Room> rooms = new List<Room>();
             db.tbRooms.ToList().ForEach(room => { rooms.Add(new Room(room)); });
+
+            //rooms = (from f in db.tbRooms
+            //         select new Room(f)).ToList();
+
             return rooms;
         }
         public ActionResult AdminRoomAdd(string Namn, string Chairs, string Rumsbeskrivning)
@@ -311,64 +335,80 @@ namespace Group5ScrumProject.Controllers
             }
             catch (Exception)
             {
-
                 return View("AdminViewSettings");
             }
-
         }
 
         [HttpPost]
-        public ActionResult AdminRoomDelete(string id)
+        public ActionResult AdminRoomDelete(int id)
         {
+            var DeleteRooms = db.tbRooms;
+            ViewBag.Rooms = DeleteRooms;
+            ViewBag.User = Session["User"];
+
             try
             {
                 var Room2Delete = (from f in db.tbRooms
-                                   where f.iRoomId == int.Parse(id)
+                                   where f.iRoomId == id
                                    select f).FirstOrDefault();
 
                 db.tbRooms.DeleteOnSubmit(Room2Delete);
                 db.SubmitChanges();
-                return View("AdminViewSettings");
+
+                ViewBag.Message = "Rum " + Room2Delete.sRoomName +" är borttaget";
+                return View();
             }
             catch
             {
-                return View("AdminViewSettings");
+                ViewBag.Message = "Oj oj.... Något har gått fel :(";
+                return View();
             }
         }
 
         [HttpGet]
-        public ActionResult AdminBookingAdd()
+        public ActionResult AdminBookingAdd(int time = 0, string date = null)
         {
+            IEnumerable<SelectListItem> rooms = db.tbRooms.Select(x => new SelectListItem { Text = x.sRoomName, Value = x.iRoomId.ToString() });
+
+            List<SelectListItem> hours = new List<SelectListItem> 
+                { 
+                    new SelectListItem { Text = "09:00", Value = "09:00" },
+                    new SelectListItem { Text = "10:00", Value = "10:00" },
+                    new SelectListItem { Text = "11:00", Value = "11:00" },
+                    new SelectListItem { Text = "12:00", Value = "12:00" },
+                    new SelectListItem { Text = "13:00", Value = "13:00" },
+                    new SelectListItem { Text = "14:00", Value = "14:00" },
+                    new SelectListItem { Text = "15:00", Value = "15:00" },
+                    new SelectListItem { Text = "16:00", Value = "16:00" } 
+                };
+
+            if (Session["bookingConfirmed"] == null || (string)Session["bookingConfirmed"] == "")
             {
-                IEnumerable<SelectListItem> rooms = db.tbRooms.Select(x => new SelectListItem { Text = x.sRoomName, Value = x.iRoomId.ToString() });
-
-                List<SelectListItem> hours = new List<SelectListItem> 
-            { 
-            new SelectListItem { Text = "09:00", Value = "09:00" }, 
-            new SelectListItem { Text = "10:00", Value = "10:00" }, 
-            new SelectListItem { Text = "11:00", Value = "11:00" } ,
-            new SelectListItem { Text = "12:00", Value = "12:00" } ,
-            new SelectListItem { Text = "13:00", Value = "13:00" } ,
-            new SelectListItem { Text = "14:00", Value = "14:00" } ,
-            new SelectListItem { Text = "15:00", Value = "15:00" } ,
-            new SelectListItem { Text = "16:00", Value = "16:00" } 
-            };
-
-                ViewBag.ddlRooms = rooms;
-                ViewBag.ddlTimeStart = (IEnumerable<SelectListItem>)hours;
-                ViewBag.ddlTimeEnd = (IEnumerable<SelectListItem>)hours;
-
-                if (Session["bookingConfirmed"] == null || (string)Session["bookingConfirmed"] == "")
-                {
-                    ViewBag.BookingMessage = Session["ErrorMessage"];
-                }
-                else
-                {
-                    ViewBag.BookingMessage = "Bokning genomförd";
-                    Session["bookingConfirmed"] = "";
-                    Session["ErrorMessage"] = "";
-                }
+                ViewBag.BookingMessage = Session["ErrorMessage"];
             }
+            else
+            {
+                ViewBag.BookingMessage = "Bokning genomförd";
+                Session["bookingConfirmed"] = "";
+                Session["ErrorMessage"] = "";
+            }
+
+            if (time != 0 && date != null)
+            {
+                //Plats för kod som begränsar användaren.....
+
+                //ViewBag.ddlRooms = rooms;
+                //ViewBag.ddlTimeStart = (IEnumerable<SelectListItem>)hours;
+                //ViewBag.ddlTimeEnd = (IEnumerable<SelectListItem>)hours;
+
+                //ViewBag.Date = DateTime.Today.ToString("yyyy/MM/dd");
+                //return View();
+            }
+
+            ViewBag.ddlRooms = rooms;
+            ViewBag.ddlTimeStart = (IEnumerable<SelectListItem>)hours;
+            ViewBag.ddlTimeEnd = (IEnumerable<SelectListItem>)hours;
+
             ViewBag.Date = DateTime.Today.ToString("yyyy/MM/dd");
             return View();
         }
@@ -409,6 +449,11 @@ namespace Group5ScrumProject.Controllers
 
 
             tbUser u = (tbUser)Session["User"];
+
+            if (Session["User"] == null)
+            {
+                RedirectToAction("Login");
+            }
 
             tbBooking newBooking = new tbBooking
             {
@@ -491,39 +536,58 @@ namespace Group5ScrumProject.Controllers
 
         public ActionResult UploadFile(string Submit) //David
         {
-            // Loopen is only used onces but will be good later when we can upload multiple files
-            foreach (string upload in Request.Files)
+            int loops = 0;
+
+            try
             {
-                string path = AppDomain.CurrentDomain.BaseDirectory + "uploads/";       //Sets a path to save the uploaded file to a directory on the server
-                string filename = Path.GetFileName(Request.Files[upload].FileName);     //Gets the name of the uploaded file
-                Request.Files[upload].SaveAs(Path.Combine(path, filename));             //Saves the uploaded file to path folder
-
-                System.Text.Encoding enc = System.Text.Encoding.Default;                //Sets the Encoding of the file to make special characters like åäö "possible"
-                StreamReader sr = new StreamReader(path + filename, enc);               //Instanciates a streamReader that wil read the file line by line
-
-                string strline = "";                                //Will store each line found in the file
-                string[] _values = null;                            //Will store each entry that is "," separated in the list
-                while (!sr.EndOfStream)                             //While we have more lines in the file we will keep going troung the next line untill there are no more lines in the file
+                foreach (string upload in Request.Files)
                 {
-                    strline = sr.ReadLine();                        //Gets the first line in the file with StreamReader
-                    _values = strline.Split(',');                   //Separates the line on "," in to a list
+                    string path = AppDomain.CurrentDomain.BaseDirectory + "uploads/";       //Sets a path to save the uploaded file to a directory on the server
+                    string filename = Path.GetFileName(Request.Files[upload].FileName);     //Gets the name of the uploaded file
+                    Request.Files[upload].SaveAs(Path.Combine(path, filename));             //Saves the uploaded file to path folder
 
-                    tbUser user = new tbUser();                     //A tbUser database object is created to store what we have in the file 
+                    System.Text.Encoding enc = System.Text.Encoding.Default;                //Sets the Encoding of the file to make special characters like åäö "possible"
+                    StreamReader sr = new StreamReader(path + filename, enc);               //Instanciates a streamReader that wil read the file line by line
+
+                    string strline = "";                                //Will store each line found in the file
+                    string[] _values = null;                            //Will store each entry that is "," separated in the list
+
+                    while (!sr.EndOfStream)                            //While we have more lines in the file we will keep going troung the next line untill there are no more lines in the file
                     {
-                        user.sUserName = _values[0];                //Name is the first entry in the file on each line
-                        user.sUserLoginName = _values[1];           //Login name is in second place in the file
-                        user.sUserPassword = _values[2];            //Password in 3rd place
-                        user.iUserRole = 1;                         //Standard value to make all added users "User" in the database
-                        user.iBlocked = 0;                          //Standard value so that the user is not blocked from start
-                        user.sClass = _values[3];                   //4th place in the file is info about what class the user goes in
-                    };
+                        loops = loops + 1;
+                        strline = sr.ReadLine();                        //Gets the first line in the file with StreamReader
+                        _values = strline.Split(',');                   //Separates the line on "," in to a list
 
-                    db.tbUsers.InsertOnSubmit(user);                //Save to database
-                    db.SubmitChanges();                             //Save to database
+                        tbUser user = new tbUser();                     //A tbUser database object is created to store what we have in the file 
+                        {
+                            user.sUserName = _values[0];                //Name is the first entry in the file on each line
+                            user.sUserLoginName = _values[1];           //Login name is in second place in the file
+                            user.sUserPassword = _values[2];            //Password in 3rd place
+                            user.iUserRole = 1;                         //Standard value to make all added users "User" in the database
+                            user.iBlocked = 0;                          //Standard value so that the user is not blocked from start
+                            user.sClass = _values[3];                   //4th place in the file is info about what class the user goes in
+                        };
+
+                        db.tbUsers.InsertOnSubmit(user);                //Save to database
+                        db.SubmitChanges();                             //Save to database
+                    }
+                    sr.Close();                                         //Close StreamReader
                 }
-                sr.Close();                                         //Close StreamReader
             }
+            catch (Exception)
+            {
+                ViewBag.Message = "Du har laddat upp en fil som inte funkar :(";
+                
+                return View();
+            }
+            // Loopen is only used onces but will be good later when we can upload multiple files
+            
 
+            if (loops != 0)
+            {
+                ViewBag.Message = "Du har lagt till " + loops + " personer";
+            }
+            
             return View();
         }
     }

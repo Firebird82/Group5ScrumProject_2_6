@@ -1,26 +1,73 @@
 ﻿@using Group5ScrumProject
+@using Group5ScrumProject.Models
+@model List<Group5ScrumProject.Models.Room>
+
 @{
     User user = new User((tbUser)ViewBag.User);
+    WebGrid grid = new WebGrid(Model, rowsPerPage: ViewBag.nrOfRows);
 }
 
 @if (ViewBag.User == null)
-	{
-        Html.RenderAction("Login");
-	}
+{
+    Html.RenderAction("Login");
+}
 Välkommen @user.sUserName - @user.sUserRole
 
 @if (user.sUserRole == "Admin")
 {
     <br />
-    <a href="AdminViewSettings"> <input id="btnAdmin" type="button" value="Admin inställningar" /></a>
+    <a href="AdminViewSettings">
+        <input id="btnAdmin" type="button" value="Admin inställningar" /></a>
 }  
 
-@foreach (var r in ViewBag.Rooms)
+@*@foreach (var r in ViewBag.Rooms)
 {
     <p>
         Rumnamn: @r.sRoomName
         <br />
         Antal platser:  @r.iRoomChairs
     </p>
+}*@
+
+@{ // http://mvc-tutorials.com/asp-net-mvc-webgrid-with-paging-sorting-edit-and-delete-commands
+
+    foreach (Room room in ViewBag.Rooms)
+    {
+    <table class="webgrid">
+        <thead>
+            <tr class="webgrid-header">
+                <th scope="col">@room.RoomName</th>
+                <th scope="col">Stolar: @room.Chairs</th>
+                <th scope="col">Beskrivning: @room.RoomDescription</th>
+            </tr>
+        </thead>
+
+        <tbody>
+        <tr class="webgrid-row-style">
+            <td>09:00 - 10:00</td><td><a href="AdminBookingAdd?time=9&date=11-02-2013">Boka</a></td>
+        </tr>
+        <tr class="webgrid-row-style">
+            <td>10:00 - 11:00</td><td>Ej bokad</td>
+        </tr>
+        <tr class="webgrid-row-style">
+            <td>11:00 - 12:00</td><td>Ej bokad</td>
+        </tr>
+        <tr class="webgrid-row-style">
+            <td>12:00 - 13:00</td><td>Ej bokad</td>
+        </tr>
+        <tr class="webgrid-row-style">
+            <td>13:00 - 14:00</td><td>Ej bokad</td>
+        </tr>
+        <tr class="webgrid-row-style">
+            <td>14:00 - 15:00</td><td>Ej bokad</td>
+        </tr>
+        <tr class="webgrid-row-style">
+            <td>15:00 - 16:00</td><td>Ej bokad</td>
+        </tr>
+    </tbody>
+    </table>    <br />
+
+    }
+   
 }
 

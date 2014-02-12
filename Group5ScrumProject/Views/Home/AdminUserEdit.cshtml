@@ -10,16 +10,15 @@
         HttpMethod = "GET",
         InsertionMode = InsertionMode.Replace,
         UpdateTargetId = "list",
-
         Url = ""
-
     }))
-{
+    {
 
-    <input type="search" name="searchTerm" />
-    <input type="submit" value="search by name" />
+<input type="search" name="searchTerm" />
+<input type="submit" value="search by name" />
 
 }
 <div id="container">
     @Html.Partial("_UsersEdit", Model)
-</div>
+</div> <br />
+ @Html.ActionLink("Tillbaka", "AdminViewSettings")
