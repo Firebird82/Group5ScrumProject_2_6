@@ -23,6 +23,13 @@ namespace Group5ScrumProject.Controllers
                 return View("Login");
             }
 
+            List<BookingInfo> bookingList = new List<BookingInfo>();
+
+            Room testRoom = (from f in db.tbRooms
+                               select new Room(f)).FirstOrDefault();
+
+            bookingList = testRoom.BookingList(DateTime.Now);
+
             var allRooms = db.tbRooms;
             ViewBag.Rooms = allRooms;
             ViewBag.User = Session["User"];
