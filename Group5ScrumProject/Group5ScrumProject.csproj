@@ -325,6 +325,7 @@
     <Content Include="Views\Home\UploadFile.cshtml" />
     <Content Include="Views\Home\_UsersEdit.cshtml" />
     <Content Include="Views\Home\Edit.cshtml" />
+    <Content Include="Views\Home\SendEmail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

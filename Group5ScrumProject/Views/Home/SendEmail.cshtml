@@ -1,0 +1,28 @@
+﻿@model Group5ScrumProject.tbUser
+
+<h2>Skicka meddelande</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.HiddenFor(modelitem => Model.iUserId)
+
+    <fieldset>
+        <legend>Skicka meddelande</legend>
+
+        <div class="editor-label">
+            Meddelande
+        </div>
+        <div class="editor-field">
+            @Html.TextArea("Body", null, new { cols = "50", rows = "10" })
+        </div>
+        <p>
+            <input type="submit" value="Skicka meddelande" />
+            <br />
+        </p>
+
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Tillbaka", "AdminUserEdit")
+</div>
