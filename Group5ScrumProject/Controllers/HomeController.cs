@@ -562,6 +562,26 @@ namespace Group5ScrumProject.Controllers
                 return View("AdminBookingDelete");
             }
         }
+        public ActionResult UserBookings()//Björn
+        {
+            if (Session["User"] == null)
+            {
+                return View("Login");
+            }
+
+
+            tbUser u = (tbUser)Session["User"];
+
+            ViewBag.Bokningar = (from f in db.tbBookings
+                                 where f.iUserId == u.iUserId
+                                 select f).ToList();
+
+            var användare = (from f in db.tbUsers
+                             where f.iUserId == u.iUserId
+                             select f).FirstOrDefault();
+
+            return View(användare);
+        }
 
         public ActionResult UploadFile(string Submit) //David
         {
