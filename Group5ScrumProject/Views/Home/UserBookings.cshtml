@@ -1,0 +1,45 @@
+﻿@using Group5ScrumProject
+@model Group5ScrumProject.tbUser
+
+@{
+    ViewBag.Title = "UserBookings";
+}
+
+<h2>UserBookings</h2>
+<h3>Ta bort dina tids bokningar</h3>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <fieldset>
+        <legend>Bokning</legend>
+
+        <div class="display-label">
+            @Html.DisplayNameFor(model => model.sUserName)
+        </div>
+
+        <table>
+            @{
+                foreach (tbBooking a in ViewBag.Bokningar)
+                {
+                    <tr>
+                        <td>Rum: @a.iRumId</td>
+                        <td>@a.dtDateDay.ToShortDateString()</td>
+                        <td>@string.Format("{0:00}:{1:00}", a.dtTimeStart.Hours, a.dtTimeStart.Minutes)</td>
+                        <td>@string.Format("{0:00}:{1:00}", a.dtTimeEnd.Hours, a.dtTimeEnd.Minutes)</td>
+                        <td>
+                            @Html.ActionLink("Ta bort", "UserBookings", new { id = a.iBookingID })
+                        </td>
+                    </tr>
+                }
+            }
+        </table>
+    </fieldset>
+    <p>
+     <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+        </p>
+}
+
+   
+       

@@ -19,24 +19,27 @@ namespace Group5ScrumProject.Models
             {
 
                 BookedById = booking.iUserId.ToString(); //Hämta användarens namn och klass David Sebela - SHAN13
-                RoomId = booking.iRumId;  
-                Time = booking.dtTimeStart.ToString();
+                RoomId = roomId.ToString();
+                TimeStart = booking.dtTimeStart.ToString();
+                TimeEnd = time.Add(TimeSpan.FromHours(1)).ToString();
                 IsBooked = "Redan bokad";
-                BookingDay = booking.dtDateDay.ToString();   
+                BookingDay = day.ToString("yyyy/MM/dd");   
             }
             else
             {
                 BookedById = "";
-                RoomId = 0;
-                Time = time.ToString();
+                RoomId = roomId.ToString();
+                TimeStart = time.ToString();
+                TimeEnd = time.Add(TimeSpan.FromHours(1)).ToString();
                 IsBooked = "Boka";
-                BookingDay = "";
+                BookingDay = day.ToString("yyyy/MM/dd"); 
             }
         }
 
         public string BookedById { get; set; }
-        public int RoomId { get; set; }
-        public string Time { get; set; }
+        public string RoomId { get; set; }
+        public string TimeStart { get; set; }
+        public string TimeEnd { get; set; }
         public string IsBooked { get; set; }
         public string BookingDay { get; set; }
     }
