@@ -17,8 +17,15 @@ namespace Group5ScrumProject.Models
 
             if (booking != null)
             {
+                string userName = (from f in db.tbUsers
+                                   where f.iUserId == booking.iUserId
+                                   select f.sUserName).FirstOrDefault();
 
-                BookedById = booking.iUserId.ToString(); //Hämta användarens namn och klass David Sebela - SHAN13
+                string userClass = (from f in db.tbUsers
+                                   where f.iUserId == booking.iUserId
+                                   select f.sClass).FirstOrDefault();
+
+                BookedBy = userName + " - " + userClass;
                 RoomId = roomId.ToString();
                 TimeStart = booking.dtTimeStart.ToString();
                 TimeEnd = time.Add(TimeSpan.FromHours(1)).ToString();
@@ -27,7 +34,7 @@ namespace Group5ScrumProject.Models
             }
             else
             {
-                BookedById = "";
+                BookedBy = "";
                 RoomId = roomId.ToString();
                 TimeStart = time.ToString();
                 TimeEnd = time.Add(TimeSpan.FromHours(1)).ToString();
@@ -36,7 +43,7 @@ namespace Group5ScrumProject.Models
             }
         }
 
-        public string BookedById { get; set; }
+        public string BookedBy { get; set; }
         public string RoomId { get; set; }
         public string TimeStart { get; set; }
         public string TimeEnd { get; set; }
