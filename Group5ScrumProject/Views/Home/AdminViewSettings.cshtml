@@ -5,20 +5,21 @@
 <h1>Admin inställningar:</h1>
 
 <h2>Användare</h2>
-        @Html.ActionLink("Lägg till användare", "AdminUserAdd")
-        @Html.ActionLink("Editera användare", "AdminUserEdit")
-        @Html.ActionLink("Ta bort användare", "AdminUserDelete")
-        @Html.ActionLink("Lägg till från fil", "UploadFile")
+@Html.ActionLink("Lägg till användare", "AdminUserAdd")
+@Html.ActionLink("Editera användare", "AdminUserEdit")
+@Html.ActionLink("Ta bort användare", "AdminUserDelete")
+@Html.ActionLink("Lägg till från fil", "UploadFile")
+@Html.ActionLink("Skicka meddelande", "SendEmail")
 <br />
- <h2>Rum </h2>
-        @Html.ActionLink("Lägg till rum", "AdminRoomAdd") 
-        @Html.ActionLink("Editera rum", "AdminRoomEdit") 
-        @Html.ActionLink("Ta bort rum", "AdminRoomDelete") 
+<h2>Rum </h2>
+@Html.ActionLink("Lägg till rum", "AdminRoomAdd")
+@Html.ActionLink("Editera rum", "AdminRoomEdit")
+@Html.ActionLink("Ta bort rum", "AdminRoomDelete")
 <br />
 <h2>Bokning</h2>
-        @Html.ActionLink("Lägga till bokning", "AdminBookingAdd") 
-        @*@Html.ActionLink("Editera bokning", "AdminBookingEdit") *@
-        @Html.ActionLink("Ta bort Bokning", "AdminBookingDelete")  
+@Html.ActionLink("Lägga till bokning", "AdminBookingAdd")
+@*@Html.ActionLink("Editera bokning", "AdminBookingEdit") *@
+@Html.ActionLink("Ta bort Bokning", "AdminBookingDelete")
 <br />
 <br />
-@Html.ActionLink("Tillbaka","Index")
+@Html.ActionLink("Tillbaka", "Index")

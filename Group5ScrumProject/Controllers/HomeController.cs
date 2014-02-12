@@ -616,8 +616,37 @@ namespace Group5ScrumProject.Controllers
             {
                 ViewBag.Message = "Du har lagt till " + loops + " personer";
             }
-
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult SendEmail()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SendEmail(int id, string subject, string messageToUser)
+        {
+            tbUser u = db.tbUsers.Where(x => x.iUserId == id).FirstOrDefault();
+
+            //Lägg upp ny databas
+            //Lägg in emailadress
+            //Lägg till fält för att ändra emailadress i edit user
+            //Lägg till fält för att lägga till emailadress i lägg till user - både i enkel och från fil
+
+            System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
+            message.To.Add(u.sClass);
+            message.Subject = subject;
+            message.From = new System.Net.Mail.MailAddress("teknikhogskolangroup5@gmail.com");
+            message.Body = messageToUser;
+            System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient("smtp.gmail.com", 587);
+            smtp.Credentials = new System.Net.NetworkCredential("teknikhogskolangroup5", "losenordgrupp5");
+
+            smtp.EnableSsl = true;
+            smtp.Send(message);
+
+            return RedirectToAction("AdminUserEdit");
         }
     }
 }
