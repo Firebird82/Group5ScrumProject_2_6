@@ -51,7 +51,7 @@ Välkommen @user.sUserName - @user.sUserRole
          @foreach (BookingInfo roomBookingInfo in room.BookingList(DateTime.Now))
             {
                 <tr class="webgrid-row-style">
-                    <td>@roomBookingInfo.TimeStart - @roomBookingInfo.TimeEnd</td>
+                    <td>@roomBookingInfo.TimeStart - @roomBookingInfo.TimePlusOneHour</td>
                     @if (roomBookingInfo.IsBooked == "Redan bokad")
 	                {
 		                <td>Redan bokad</td>
