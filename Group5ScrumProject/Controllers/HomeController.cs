@@ -488,7 +488,8 @@ namespace Group5ScrumProject.Controllers
                 iRumId = int.Parse(ddlRooms),
                 dtDateDay = day,
                 dtTimeStart = ddlTimeStart,
-                dtTimeEnd = ddlTimeEnd
+                dtTimeEnd = ddlTimeEnd,
+                iCheckIn = 0
             };
 
             //Kollar om det finns en bokning på samma dag och i samma rum som den nya bokningen
