@@ -161,6 +161,7 @@ namespace Group5ScrumProject.Controllers
                 user.sUserLoginName = users.sUserLoginName;
                 user.sUserPassword = users.sUserPassword;
                 user.sClass = users.sClass;
+                user.Email = users.Email;
                 user.iBlocked = users.iBlocked;
 
                 db.SubmitChanges();
@@ -671,15 +672,11 @@ namespace Group5ScrumProject.Controllers
         [HttpPost]
         public ActionResult SendEmail(int id, string subject, string messageToUser)
         {
-            tbUser u = db.tbUsers.Where(x => x.iUserId == id).FirstOrDefault();
-
-            //Lägg upp ny databas
-            //Lägg in emailadress
-            //Lägg till fält för att ändra emailadress i edit user
-            //Lägg till fält för att lägga till emailadress i lägg till user - både i enkel och från fil
+            tbUser u = db.tbUsers.Where(x => x.iUserId == id)
+                .FirstOrDefault();
 
             System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
-            message.To.Add(u.sClass);
+            message.To.Add(u.Email);
             message.Subject = subject;
             message.From = new System.Net.Mail.MailAddress("teknikhogskolangroup5@gmail.com");
             message.Body = messageToUser;

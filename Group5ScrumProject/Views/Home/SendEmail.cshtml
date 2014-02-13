@@ -10,10 +10,17 @@
         <legend>Skicka meddelande</legend>
 
         <div class="editor-label">
+           Ämne
+        </div>
+        <div class="editor-field">
+            @Html.TextBox("subject")
+        </div>
+
+        <div class="editor-label">
             Meddelande
         </div>
         <div class="editor-field">
-            @Html.TextArea("Body", null, new { cols = "50", rows = "10" })
+            @Html.TextArea("messageToUser", null, new { cols = "50", rows = "10" })
         </div>
         <p>
             <input type="submit" value="Skicka meddelande" />

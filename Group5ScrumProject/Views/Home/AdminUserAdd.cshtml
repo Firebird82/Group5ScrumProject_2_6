@@ -49,6 +49,14 @@
             @Html.EditorFor(model => model.sClass)
             @Html.ValidationMessageFor(model => model.sClass)
         </div>
+        <div>
+            @Html.LabelFor(model => model.Email, "E-mail")
+        </div>
+        <div>
+          
+            @Html.EditorFor(model => model.Email)
+            @Html.ValidationMessageFor(model => model.Email)
+        </div>
           <div>
             @Html.LabelFor(model => model.iUserRole, "Rättigheter")
         </div>
