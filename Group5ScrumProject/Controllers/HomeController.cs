@@ -599,7 +599,7 @@ namespace Group5ScrumProject.Controllers
             try
             {
                 List<Booking> bookings = db.tbBookings.Select(f => new Booking(f)).ToList();
-              
+
                 return View(bookings);
             }
             catch
@@ -623,7 +623,7 @@ namespace Group5ScrumProject.Controllers
                 tbUser u = db.tbUsers.Where(x => x.iUserId == bookings.iUserId).FirstOrDefault();
 
                 SendMessage(u.iUserId, "Bokning borttagen", "Hej " + u.sUserName + ". \nDin bokning har blivit borttagen. Kontakta administratören.");
-
+                
                 db.tbBookings.DeleteOnSubmit(bookings);
                 db.SubmitChanges();
 
@@ -743,7 +743,7 @@ namespace Group5ScrumProject.Controllers
 
                 return View();
             }
-            
+
             // Loopen is only used onces but will be good later when we can upload multiple files
             if (loops != 0)
             {
