@@ -34,7 +34,7 @@ namespace Group5ScrumProject.Controllers
             return View(rooms);
         }
 
-        public ActionResult Index(string searchString = "", int ddlChairs = 0, string ddlRooms = "")
+        public ActionResult Index(DateTime? day, int ddlChairs = 0, string ddlRooms = "")
         {
             if (Session["User"] == null)
             {
@@ -44,26 +44,29 @@ namespace Group5ScrumProject.Controllers
             ViewBag.User = Session["User"];
             ViewBag.ddlRooms = new SelectList(db.tbRooms.OrderBy(c => c.sRoomName), "sRoomName", "sRoomName");
             ViewBag.ddlChairs = new SelectList(db.tbRooms.OrderBy(c => c.iRoomChairs), "iRoomChairs", "iRoomChairs");
-            ViewBag.Date = DateTime.Now;
+
+
+            if (day == null)
+            {
+                ViewBag.Date = DateTime.Now;
+            }
+            else
+                ViewBag.Date = day;
+
             ViewBag.nrOfRows = 5;
             ViewBag.Rooms = getRooms();
 
             if (ddlRooms != "")
             {
-                //var rooms = (from m in db.tbRooms
-                //             join s in db.tbBookings
-                //             on m.iRoomId equals s.iRumId
-                //             select m).Where(c => c.iRoomChairs == ddlChairs || c.sRoomName == ddlRooms.ToString() || c.sRoomName == searchString).Distinct();
-
                 List<Room> rooms = (from f in db.tbRooms
-                                    where f.sRoomName == ddlRooms
+                                    where f.sRoomName == ddlRooms || f.iRoomChairs == ddlChairs
+
                                     select new Room(f)).ToList();
 
                 ViewBag.Rooms = rooms;
                 return View("Index", getRooms());
             }
             return View("Index", getRooms());
-
         }
 
         public ActionResult Login(string tbxName, string tbxPassword)
