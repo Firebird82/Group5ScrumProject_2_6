@@ -1,1 +1,16 @@
-﻿.test{}
+﻿body {
+    background-image: url(https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcR9NM46ofCHS2liXxX0ElsFiLzlgFt0WeU0yGR6M0M5WS7UOpWs);
+    background-position: right;
+    background-image: url(http://fc07.deviantart.net/fs70/f/2013/300/6/3/premade_bg_endless_room_by_e_dinaphotoart-d33sxs4.jpg);
+    background-attachment:fixed;
+    background-position: center;
+    
+    background-repeat:no-repeat;
+    background-size: contain;
+    
+    
+   
+}
+head {
+    
+}
