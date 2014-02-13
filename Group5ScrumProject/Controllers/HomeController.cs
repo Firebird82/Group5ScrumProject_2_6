@@ -415,6 +415,9 @@ namespace Group5ScrumProject.Controllers
                 Session["ErrorMessage"] = "";
             }
 
+            tbUser u = (tbUser)Session["User"];
+            ViewBag.userRole = u.iUserRole;
+
             ViewBag.ddlRooms = rooms;
             ViewBag.ddlTimeStart = (IEnumerable<SelectListItem>)hours;
             ViewBag.ddlTimeEnd = (IEnumerable<SelectListItem>)hours;
