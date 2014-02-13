@@ -720,7 +720,8 @@ namespace Group5ScrumProject.Controllers
                             user.sUserPassword = _values[2];            //Password in 3rd place
                             user.iUserRole = 2;                         //Standard value to make all added users "User" in the database
                             user.iBlocked = 0;                          //Standard value so that the user is not blocked from start
-                            user.sClass = _values[3];                   //4th place in the file is info about what class the user goes in
+                            user.Email = _values[3];                    //4th place in the file is mail info
+                            user.sClass = _values[4];                   //5th place in the file is info about what class the user goes in
                         };
 
                         db.tbUsers.InsertOnSubmit(user);                //Save to database
@@ -735,9 +736,8 @@ namespace Group5ScrumProject.Controllers
 
                 return View();
             }
+            
             // Loopen is only used onces but will be good later when we can upload multiple files
-
-
             if (loops != 0)
             {
                 ViewBag.Message = "Du har lagt till " + loops + " personer";
