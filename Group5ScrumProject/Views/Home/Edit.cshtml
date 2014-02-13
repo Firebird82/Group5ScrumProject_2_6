@@ -48,6 +48,13 @@
             @Html.EditorFor(model => Model.sClass)
             @Html.ValidationMessageFor(model => Model.sClass)
         </div>
+         <div class="editor-label">
+            E-mail
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => Model.Email)
+            @Html.ValidationMessageFor(model => Model.Email)
+        </div>
         <div>
             @Html.LabelFor(model => model.iBlocked, "Spärra")
         </div>

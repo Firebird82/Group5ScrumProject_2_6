@@ -161,6 +161,7 @@ namespace Group5ScrumProject.Controllers
                 user.sUserLoginName = users.sUserLoginName;
                 user.sUserPassword = users.sUserPassword;
                 user.sClass = users.sClass;
+                user.Email = users.Email;
                 user.iBlocked = users.iBlocked;
 
                 db.SubmitChanges();
@@ -425,7 +426,22 @@ namespace Group5ScrumProject.Controllers
         {
             tbUser u = (tbUser)Session["User"];
 
-            if (ddlTimeStart.Hours == ddlTimeEnd.Hours)
+            if (u.iUserRole == 2 && db.tbBookings.Where(b => b.iUserId == u.iUserId)
+                                    .Where(b => b.dtDateDay.DayOfYear >= DateTime.Today.DayOfYear)
+                                    .FirstOrDefault() != null) //Om användaren har en befintlig bokning
+            {
+                Session["ErrorMessage"] = "Du har redan en aktiv bokning.";
+            }
+            else if (u.iUserRole == 2 && ((ddlTimeEnd.Hours - ddlTimeStart.Hours) > 4)) //Om en användare försöker boka mer än 4 timmar
+            {
+                Session["ErrorMessage"] = "Du kan endast boka 4 timmar åt gången.";
+            }
+            else if (u.iUserRole == 2 && (day.DayOfYear - DateTime.Today.DayOfYear) > 7) //Om användaren försöker boka en tid längre fram i tiden än 7 dagar
+            {
+                Session["ErrorMessage"] = "Du kan endast boka en vecka fram i tiden.";
+            }
+
+            else if (ddlTimeStart.Hours == ddlTimeEnd.Hours)
             {
                 Session["ErrorMessage"] = "Starttid och sluttid kan ej vara samma tid.";
             }
@@ -437,24 +453,6 @@ namespace Group5ScrumProject.Controllers
             {
                 Session["ErrorMessage"] = "Du kan endast boka tider framåt i tiden.";
             }
-            else if (u.iUserRole == 2)
-            {
-                if (db.tbBookings.Where(b => b.iUserId == u.iUserId)
-                    .Where(b => b.dtDateDay.DayOfYear >= DateTime.Today.DayOfYear)
-                    .FirstOrDefault() != null) //Om användaren har en befintlig bokning
-                {
-                    Session["ErrorMessage"] = "Du har redan en aktiv bokning.";
-                }
-                else if (((ddlTimeEnd.Hours - ddlTimeStart.Hours) > 4)) //Om en användare försöker boka mer än 4 timmar
-                {
-                    Session["ErrorMessage"] = "Du kan endast boka 4 timmar åt gången.";
-                }
-                else if ((day.DayOfYear - DateTime.Today.DayOfYear) > 7) //Om användaren försöker boka en tid längre fram i tiden än 7 dagar
-                {
-                    Session["ErrorMessage"] = "Du kan endast boka en vecka fram i tiden.";
-                }
-            }
-
             else  //Bokning genomförs
             {
                 if (recurrent == true)
@@ -674,15 +672,11 @@ namespace Group5ScrumProject.Controllers
         [HttpPost]
         public ActionResult SendEmail(int id, string subject, string messageToUser)
         {
-            tbUser u = db.tbUsers.Where(x => x.iUserId == id).FirstOrDefault();
-
-            //Lägg upp ny databas
-            //Lägg in emailadress
-            //Lägg till fält för att ändra emailadress i edit user
-            //Lägg till fält för att lägga till emailadress i lägg till user - både i enkel och från fil
+            tbUser u = db.tbUsers.Where(x => x.iUserId == id)
+                .FirstOrDefault();
 
             System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
-            message.To.Add(u.sClass);
+            message.To.Add(u.Email);
             message.Subject = subject;
             message.From = new System.Net.Mail.MailAddress("teknikhogskolangroup5@gmail.com");
             message.Body = messageToUser;
