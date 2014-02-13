@@ -25,26 +25,18 @@ Välkommen @user.sUserName - @user.sUserRole
         <input id="btnAdmin" type="button" value="Admin inställningar" /></a>
 }
 
-@*@using (Ajax.BeginForm(new AjaxOptions
-{
-    HttpMethod = "POST"
-    //,
-    //InsertionMode = InsertionMode.Replace,
-    //UpdateTargetId = "contentDiv"
-}))
-{*@
-    @using (Html.BeginForm())
-    { 
-        <input type="submit" value="Sök" />
-        @Html.TextBox("searchString")
-        @Html.DropDownList("ddlRooms", "Välj rum")
-        @Html.DropDownList("ddlChairs", "Antal stolar")
-        <input data-val="true" value="@ViewBag.Date" name="day" type="date" />
-    
-    }
+@using (Html.BeginForm())
+{ 
+    <input type="submit" value="Sök" />
+      
+    @Html.DropDownList("ddlRooms", "Välj rum")
+    @Html.DropDownList("ddlChairs", "Antal stolar")
+    <input data-val="true" value="@ViewBag.Date" name="day" type="date" />
+}
 
 @{ // http://mvc-tutorials.com/asp-net-mvc-webgrid-with-paging-sorting-edit-and-delete-commands
-
+    <p>Datum för bokning:</p> @ViewBag.Date
+   
     foreach (Room room in ViewBag.Rooms)
     {
     <table id="contentDiv" class="webgrid">
@@ -75,10 +67,7 @@ Välkommen @user.sUserName - @user.sUserRole
                 </tr>
             }
         </tbody>
-
     </table>
     <br />
-
     }
-   
 }
