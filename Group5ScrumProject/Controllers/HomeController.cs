@@ -624,19 +624,31 @@ namespace Group5ScrumProject.Controllers
             try
             {
 
+                tbUser u = (tbUser)Session["User"];
+
+                var användare = (from f in db.tbUsers
+                                 where f.iUserId == u.iUserId
+                                 select f).FirstOrDefault();
+
                 var bookings = db.tbBookings
                     .Where(b => b.iBookingID == int.Parse(id))
                     .FirstOrDefault();
 
                 db.tbBookings.DeleteOnSubmit(bookings);
                 db.SubmitChanges();
-                return View("UserBookings");
+                return View("UserBookings", new User(användare));
 
 
             }
             catch (Exception)
             {
-                return View("UserBookings");
+                tbUser u = (tbUser)Session["User"];
+
+                var användare = (from f in db.tbUsers
+                                 where f.iUserId == u.iUserId
+                                 select f).FirstOrDefault();
+
+                return View("UserBookings", new User(användare));
             }
         }
 
