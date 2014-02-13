@@ -425,7 +425,7 @@ namespace Group5ScrumProject.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult AdminBookingAdd(string ddlRooms, DateTime day, TimeSpan ddlTimeStart, TimeSpan ddlTimeEnd, bool recurrent)
+        public ActionResult AdminBookingAdd(string ddlRooms, DateTime day, TimeSpan ddlTimeStart, TimeSpan ddlTimeEnd, bool recurrent = false)
         {
             tbUser u = (tbUser)Session["User"];
 
