@@ -1,9 +1,9 @@
 ﻿@using Group5ScrumProject.Controllers
 @model List<Group5ScrumProject.Models.BookingHistory>
-
+@{ Layout = ""; }
 <br/>
 @{
-    WebGrid grid = new WebGrid(Model, rowsPerPage: ViewBag.nrOfRows);
+    WebGrid grid = new WebGrid(Model, rowsPerPage: ViewBag.nrOfRows, canSort:false);
 }
 
 @{ // http://mvc-tutorials.com/asp-net-mvc-webgrid-with-paging-sorting-edit-and-delete-commands

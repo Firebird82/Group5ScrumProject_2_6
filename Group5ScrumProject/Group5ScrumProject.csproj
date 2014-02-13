@@ -328,8 +328,10 @@
     <Content Include="Views\Home\Edit.cshtml" />
     <Content Include="Views\Home\SendEmail.cshtml" />
     <Content Include="Views\Home\AdminBookingHistories.cshtml" />
-    <Content Include="Views\Home\_AdminBookingHistories.cshtml" />
+    <Content Include="Views\Home\_AdminBookingHistoriesWebGrid.cshtml" />
     <Content Include="Views\Home\UserBookings.cshtml" />
+    <Content Include="Views\Home\_AdminBookingHistoriesddl.cshtml" />
+    <Content Include="Views\Home\AdminBookingHistoriesNoResult.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
