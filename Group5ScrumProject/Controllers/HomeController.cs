@@ -513,7 +513,34 @@ namespace Group5ScrumProject.Controllers
             //Lägger in ny bokning
             db.tbBookings.InsertOnSubmit(newBooking);
             db.SubmitChanges();
+
+            //Skickar mail till användaren med bokningsbekräftelse
+            BookingConfirmationMessage(u, newBooking);
             Session["bookingConfirmed"] = "Bokning genomförd";
+        }
+
+        //Metod som skickar bokningsbekräftelse till användaren
+        public void BookingConfirmationMessage(tbUser user, tbBooking booking)
+        {
+            try
+            {
+                System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
+                message.To.Add(user.Email);
+                message.Subject = "Bokningsbekräftelse";
+                message.From = new System.Net.Mail.MailAddress("teknikhogskolangroup5@gmail.com");
+                message.Body = "Hej " + user.sUserName + ". \n Du har bokat projektrum " + booking.iRumId + ". \nDatum: " + booking.dtDateDay.ToString("yyyy/MM/dd") + ".\n Starttid: " + booking.dtTimeStart.ToString("hh\\:mm")
+                  + ". \nSluttid: " + booking.dtTimeEnd.ToString("hh\\:mm") + ". \nGlöm inte att checka in senast 2 timmar innan bokningen startar.";
+                System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient("smtp.gmail.com", 587);
+                smtp.Credentials = new System.Net.NetworkCredential("teknikhogskolangroup5", "losenordgrupp5");
+
+                smtp.EnableSsl = true;
+                smtp.Send(message);
+            }
+            catch
+            {
+                return;
+            }
+
         }
 
         public ActionResult AdminBookingEdit()
