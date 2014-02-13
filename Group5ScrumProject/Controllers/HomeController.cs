@@ -16,26 +16,52 @@ namespace Group5ScrumProject.Controllers
     {
         DataClasses1DataContext db = new DataClasses1DataContext();
 
-        public ActionResult Index()
+        public ActionResult Search(string searchString = "", int ddlChairs = 0, string ddlRooms = "")
+        {
+
+            ViewBag.ddlRooms = new SelectList(db.tbRooms.OrderBy(c => c.sRoomName), "sRoomName", "sRoomName");
+            ViewBag.ddlChairs = new SelectList(db.tbRooms.OrderBy(c => c.iRoomChairs), "iRoomChairs", "iRoomChairs");
+            
+            var rooms = (from m in db.tbRooms
+                         join s in db.tbBookings
+                         on m.iRoomId equals s.iRumId
+                         select m).Where(c => c.iRoomChairs == ddlChairs || c.sRoomName == ddlRooms.ToString() || c.sRoomName == searchString).Distinct();
+
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("Index", rooms);
+            }
+            return View(rooms);
+        }
+
+        public ActionResult Index(string searchString = "", int ddlChairs = 0, string ddlRooms = "")
         {
             if (Session["User"] == null)
             {
                 return View("Login");
             }
-
-            List<BookingInfo> bookingList = new List<BookingInfo>();
-
-            Room testRoom = (from f in db.tbRooms
-                             select new Room(f)).FirstOrDefault();
-
-            bookingList = testRoom.BookingList(DateTime.Now);
-
-            var allRooms = db.tbRooms;
-            ViewBag.Rooms = allRooms;
+            
             ViewBag.User = Session["User"];
-
+            ViewBag.ddlRooms = new SelectList(db.tbRooms.OrderBy(c => c.sRoomName), "sRoomName", "sRoomName");
+            ViewBag.ddlChairs = new SelectList(db.tbRooms.OrderBy(c => c.iRoomChairs), "iRoomChairs", "iRoomChairs");
+            ViewBag.Date = DateTime.Now;
             ViewBag.nrOfRows = 5;
             ViewBag.Rooms = getRooms();
+
+            if (ddlRooms != "")
+            {
+                //var rooms = (from m in db.tbRooms
+                //             join s in db.tbBookings
+                //             on m.iRoomId equals s.iRumId
+                //             select m).Where(c => c.iRoomChairs == ddlChairs || c.sRoomName == ddlRooms.ToString() || c.sRoomName == searchString).Distinct();
+
+                List<Room> rooms = (from f in db.tbRooms
+                                         where f.sRoomName == ddlRooms
+                                         select new Room(f)).ToList();
+
+                ViewBag.Rooms = rooms;
+                return View("Index", getRooms());
+            }
             return View("Index", getRooms());
 
         }
@@ -216,6 +242,17 @@ namespace Group5ScrumProject.Controllers
 
             return View("AdminUserDelete");
         }
+
+        public ActionResult CheckIn(int id)
+        {
+            var a = db.tbBookings.Where(b => b.iBookingID == id).FirstOrDefault();
+
+            a.iCheckIn = 1;
+            db.SubmitChanges();
+
+            return RedirectToAction("UserBookings");
+        }
+
 
         public ActionResult AdminUserBlock()
         {
