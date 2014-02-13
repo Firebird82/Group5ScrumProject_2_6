@@ -35,7 +35,7 @@ Välkommen @user.sUserName - @user.sUserRole
 }
 
 @{ // http://mvc-tutorials.com/asp-net-mvc-webgrid-with-paging-sorting-edit-and-delete-commands
-    <p>Datum för bokning:</p> @ViewBag.Date
+    <p>Datum för bokning: @ViewBag.StringDate</p> 
    
     foreach (Room room in ViewBag.Rooms)
     {
