@@ -580,14 +580,16 @@ namespace Group5ScrumProject.Controllers
                              where f.iUserId == u.iUserId
                              select f).FirstOrDefault();
 
-            return View(användare);
+
+
+            return View("UserBookings", new User(användare));
         }
 
         [HttpPost]
         public ActionResult UserBookings(string id)
         {
             var bookingsAll = db.tbBookings;
-            ViewBag.Bookings = bookingsAll;
+            ViewBag.Bokningar = bookingsAll;
 
             try
             {
@@ -598,7 +600,7 @@ namespace Group5ScrumProject.Controllers
 
                 db.tbBookings.DeleteOnSubmit(bookings);
                 db.SubmitChanges();
-                return View("Index");
+                return View("UserBookings");
 
 
             }

@@ -1,5 +1,5 @@
 ﻿@using Group5ScrumProject
-@model Group5ScrumProject.tbUser
+@model Group5ScrumProject.User
 
 @{
     ViewBag.Title = "UserBookings";
@@ -7,16 +7,18 @@
 
 <h2>UserBookings</h2>
 <h3>Ta bort dina tids bokningar</h3>
+
+
+<p> Dina Bokningar </p>@Model.sUserName
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+     
     
     <fieldset>
         <legend>Bokning</legend>
 
-        <div class="display-label">
-            @Html.DisplayNameFor(model => model.sUserName)
-        </div>
 
         <table>
             @{
