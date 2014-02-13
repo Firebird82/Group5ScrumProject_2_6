@@ -1,0 +1,36 @@
+﻿@using Group5ScrumProject
+@using System.Web.UI.WebControls
+<script src="~/Scripts/jquery-1.8.2.js"></script>
+@model List<Group5ScrumProject.Models.BookingHistory>
+@{
+    ViewBag.Title = "AdminBookingHistories";
+}
+
+<h2>Bokningshistorik</h2>
+
+Användare
+<br/>
+@Html.DropDownList("users")
+<script>
+    $("#users").change(function() {
+        var selectedVal = $(this).find(':selected').val();
+        $.ajax({
+        url: "@Url.Action("_AdminBookingHistories")",
+        data: { id: $(this).val() },
+        cache: false,
+        type: "GET",
+        dataType: "html",
+        success: function (data, textStatus, XMLHttpRequest) {
+        SetData(data);
+    }
+        });
+        function SetData(data) {
+            $("#divPartialView").html(data); // Ersätter div'en
+        }
+    });
+</script>
+
+<div id="divPartialView"></div>
+<br/>
+<br/>
+@Html.ActionLink("Tillbaka", "AdminViewSettings")

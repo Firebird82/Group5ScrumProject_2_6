@@ -1,0 +1,29 @@
+﻿@using Group5ScrumProject.Controllers
+@model List<Group5ScrumProject.Models.BookingHistory>
+
+<br/>
+@{
+    WebGrid grid = new WebGrid(Model, rowsPerPage: ViewBag.nrOfRows);
+}
+
+@{ // http://mvc-tutorials.com/asp-net-mvc-webgrid-with-paging-sorting-edit-and-delete-commands
+  
+   Html.BeginForm();
+    @grid.GetHtml(
+        columns: grid.Columns(
+            grid.Column("BookingDay"),
+            grid.Column("BokingStartTime"), 
+            grid.Column("BokingEndTime"),
+            grid.Column("BookingByName"),
+            grid.Column("BookingRoomName")
+
+        ),
+            tableStyle: "webgrid",
+            headerStyle: "webgrid-header",
+            footerStyle: "webgrid-footer",
+            alternatingRowStyle: "webgrid-alternating-row",
+            selectedRowStyle: "webgrid-selected-row",
+            rowStyle: "webgrid-row-style"
+            )
+    }
+

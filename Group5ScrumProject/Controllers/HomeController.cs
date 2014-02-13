@@ -225,7 +225,7 @@ namespace Group5ScrumProject.Controllers
         private List<Room> getRooms()
         {
             List<Room> rooms = new List<Room>();
-            db.tbRooms.ToList().ForEach(room => { rooms.Add(new Room(room)); });
+                db.tbRooms.ToList().ForEach(room => { rooms.Add(new Room(room)); });
 
             //rooms = (from f in db.tbRooms
             //         select new Room(f)).ToList();
@@ -688,6 +688,24 @@ namespace Group5ScrumProject.Controllers
             smtp.Send(message);
 
             return RedirectToAction("AdminUserEdit");
+        }
+
+        public ActionResult AdminBookingHistories()
+        {
+
+            ViewBag.users = new SelectList(db.tbUsers, "iUserId", "sUserName");
+
+            ViewBag.nrOfRows = db.tbRooms.Count(); // Skickar med antal rader till webgrid
+            return View("AdminBookingHistories");
+        }
+
+        public ActionResult _AdminBookingHistories(string id)
+        {
+            List<BookingHistory> history =
+                db.tbBookings.Where(c => c.iUserId == int.Parse(id)).Select(x => new BookingHistory(x)).ToList();
+
+            ViewBag.nrOfRows = history.Count; // Skickar med antal rader till webgrid
+            return View("_AdminBookingHistories", history);
         }
     }
 }

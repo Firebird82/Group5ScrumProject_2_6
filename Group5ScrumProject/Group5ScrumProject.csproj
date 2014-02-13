@@ -195,6 +195,7 @@
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Booking.cs" />
+    <Compile Include="Models\BookingHistory.cs" />
     <Compile Include="Models\BookingInfo.cs" />
     <Compile Include="Models\Room.cs" />
     <Compile Include="Models\User.cs" />
@@ -326,6 +327,8 @@
     <Content Include="Views\Home\_UsersEdit.cshtml" />
     <Content Include="Views\Home\Edit.cshtml" />
     <Content Include="Views\Home\SendEmail.cshtml" />
+    <Content Include="Views\Home\AdminBookingHistories.cshtml" />
+    <Content Include="Views\Home\_AdminBookingHistories.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
