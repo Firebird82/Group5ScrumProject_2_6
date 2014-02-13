@@ -94,12 +94,6 @@ namespace Group5ScrumProject.Models
                     bookingList.Add(new BookingInfo(roomId, bookedBy, timeStart, timePlusOneHour, isBooked, bookingDay));
                 }     
             }
-
-            foreach (TimeSpan time in timeList)
-            {
-            
-            }
-            
             return bookingList;
         }
     }
