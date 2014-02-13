@@ -18,7 +18,11 @@
             Sluttid:
             @Html.DropDownList("ddlTimeEnd")
         </p>
+        
+        if (ViewBag.userRole == 1)
+        {
         <p>Återkommande bokning detta datum 3 månader framöver: @Html.CheckBox("recurrent")</p>
+        }    
         
         <input type="submit" value="Boka valt rum" />  
     }
