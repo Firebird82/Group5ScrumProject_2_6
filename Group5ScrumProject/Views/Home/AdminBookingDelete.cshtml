@@ -1,6 +1,5 @@
-﻿
-@using Group5ScrumProject
-
+﻿@using Group5ScrumProject
+@model List<Group5ScrumProject.Models.Booking>
 @{
     ViewBag.Title = "AdminBookingDelete";
 }
@@ -10,15 +9,16 @@
 @using (Html.BeginForm("AdminBookingDelete", "Home", FormMethod.Post))
 {    
     <table>
-        @foreach (var item in ViewBag.Bookings)
+        @foreach (var item in Model)
         {
             <tr>
-                <td>Rum: @item.iRumId</td>
-                <td>@item.dtDateDay.ToShortDateString()</td>
-                <td>@string.Format("{0:00}:{1:00}", item.dtTimeStart.Hours, item.dtTimeStart.Minutes)</td>
-                <td>@string.Format("{0:00}:{1:00}", item.dtTimeEnd.Hours, item.dtTimeEnd.Minutes)</td>
+                <td>@item.BookingMadeByName</td>
+                <td>@item.BookingRoomName</td>
+                <td>@item.BookingDay.ToShortDateString()</td>
+                <td>@item.BokingStartTime.ToString("hh\\:mm")</td>
+                <td>@item.BokingEndTime.ToString("hh\\:mm")</td>
                 <td>
-                    @Html.ActionLink("Ta bort", "AdminBookingDelete", new { id = item.iBookingID })
+                    @Html.ActionLink("Ta bort", "AdminBookingDelete", new { id = item.BookingId })
                 </td>
             </tr>
         }
@@ -29,4 +29,6 @@
     <br />
     <br />
 }
+
+
 @Html.ActionLink("Tillbaka", "AdminViewSettings")

@@ -1,22 +1,24 @@
 ﻿@using Group5ScrumProject
-@model Group5ScrumProject.tbUser
+@model Group5ScrumProject.User
 
 @{
     ViewBag.Title = "UserBookings";
 }
 
-<h2>UserBookings</h2>
-<h3>Ta bort dina tids bokningar</h3>
+<h2>Bokningar</h2>
+
+
+
+<p> Dina Bokningar: </p>@Model.sUserName
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
+     
     
     <fieldset>
         <legend>Bokning</legend>
 
-        <div class="display-label">
-            @Html.DisplayNameFor(model => model.sUserName)
-        </div>
 
         <table>
             @{
@@ -29,6 +31,7 @@
                         <td>@string.Format("{0:00}:{1:00}", a.dtTimeEnd.Hours, a.dtTimeEnd.Minutes)</td>
                         <td>
                             @Html.ActionLink("Ta bort", "UserBookings", new { id = a.iBookingID })
+                            @Html.ActionLink("Checka in tid", "CheckIn", new { id = a.iBookingID })
                         </td>
                     </tr>
                 }

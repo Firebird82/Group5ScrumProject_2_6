@@ -15,30 +15,31 @@ Välkommen @user.sUserName - @user.sUserRole
 @if (user.sUserRole == "User")
 {
     
-        @Html.ActionLink("Dina bokningar", "UserBookings");
-    
+    @Html.ActionLink("Dina bokningar", "UserBookings");
+
 }
 @if (user.sUserRole == "Admin")
 {
     <br />
     <a href="AdminViewSettings">
         <input id="btnAdmin" type="button" value="Admin inställningar" /></a>
-}  
+}
 
-@*@foreach (var r in ViewBag.Rooms)
-{
-    <p>
-        Rumnamn: @r.sRoomName
-        <br />
-        Antal platser:  @r.iRoomChairs
-    </p>
-}*@
+@using (Html.BeginForm())
+{ 
+    <input type="submit" value="Sök" />
+      
+    @Html.DropDownList("ddlRooms", "Välj rum")
+    @Html.DropDownList("ddlChairs", "Antal stolar")
+    <input data-val="true" value="@ViewBag.Date" name="day" type="date" />
+}
 
 @{ // http://mvc-tutorials.com/asp-net-mvc-webgrid-with-paging-sorting-edit-and-delete-commands
-
+    <p>Datum för bokning: @ViewBag.StringDate</p> 
+   
     foreach (Room room in ViewBag.Rooms)
     {
-    <table class="webgrid">
+    <table id="contentDiv" class="webgrid">
         <thead>
             <tr class="webgrid-header">
                 <th scope="col">@room.RoomName</th>
@@ -48,28 +49,25 @@ Välkommen @user.sUserName - @user.sUserRole
         </thead>
 
         <tbody>
-         @foreach (BookingInfo roomBookingInfo in room.BookingList(DateTime.Now))
+            @foreach (BookingInfo roomBookingInfo in room.BookingList(ViewBag.Date))
             {
                 <tr class="webgrid-row-style">
                     <td>@roomBookingInfo.TimeStart - @roomBookingInfo.TimePlusOneHour</td>
                     @if (roomBookingInfo.IsBooked == "Redan bokad")
-	                {
-		                <td>Redan bokad</td>
-	                }
+                    {
+                        <td>Redan bokad</td>
+                    }
                     else
-	                {
-                       <td><a href="AdminBookingAdd?time=@roomBookingInfo.TimeStart&date=@roomBookingInfo.BookingDay&roomId=@roomBookingInfo.RoomId">Boka</a>  </td>   
-	                }
-                    
+                    {
+                        <td><a href="AdminBookingAdd?time=@roomBookingInfo.TimeStart&date=@roomBookingInfo.BookingDay&roomId=@roomBookingInfo.RoomId">Boka</a>  </td>   
+                    }
+
                     <td>@roomBookingInfo.BookedBy</td>
                     @*<td>09:00 - 10:00</td><td><a href="AdminBookingAdd?time=09:00&date=2013-02-11&roomId=1">Boka</a></td>*@
                 </tr>
             }
-    </tbody>
-
+        </tbody>
     </table>
     <br />
-
     }
-   
 }

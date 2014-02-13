@@ -329,6 +329,7 @@
     <Content Include="Views\Home\SendEmail.cshtml" />
     <Content Include="Views\Home\AdminBookingHistories.cshtml" />
     <Content Include="Views\Home\_AdminBookingHistories.cshtml" />
+    <Content Include="Views\Home\UserBookings.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
