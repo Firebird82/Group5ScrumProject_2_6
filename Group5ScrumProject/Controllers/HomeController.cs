@@ -243,6 +243,17 @@ namespace Group5ScrumProject.Controllers
             return View("AdminUserDelete");
         }
 
+        public ActionResult CheckIn(int id)
+        {
+            var a = db.tbBookings.Where(b => b.iBookingID == id).FirstOrDefault();
+
+            a.iCheckIn = 1;
+            db.SubmitChanges();
+
+            return RedirectToAction("UserBookings");
+        }
+
+
         public ActionResult AdminUserBlock()
         {
             return View();
