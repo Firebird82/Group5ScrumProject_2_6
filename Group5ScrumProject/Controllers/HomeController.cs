@@ -595,16 +595,14 @@ namespace Group5ScrumProject.Controllers
         {
             try
             {
-                var bookings = db.tbBookings;
-                ViewBag.Bookings = bookings;
-
-                return View();
+                List<Booking> bookings = db.tbBookings.Select(f => new Booking(f)).ToList();
+              
+                return View(bookings);
             }
             catch
             {
                 return View("AdminViewSettings");
             }
-
         }
 
         [HttpPost]
