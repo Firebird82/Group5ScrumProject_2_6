@@ -21,7 +21,7 @@ namespace Group5ScrumProject.Controllers
 
             ViewBag.ddlRooms = new SelectList(db.tbRooms.OrderBy(c => c.sRoomName), "sRoomName", "sRoomName");
             ViewBag.ddlChairs = new SelectList(db.tbRooms.OrderBy(c => c.iRoomChairs), "iRoomChairs", "iRoomChairs");
-            
+
             var rooms = (from m in db.tbRooms
                          join s in db.tbBookings
                          on m.iRoomId equals s.iRumId
@@ -40,7 +40,7 @@ namespace Group5ScrumProject.Controllers
             {
                 return View("Login");
             }
-            
+
             ViewBag.User = Session["User"];
             ViewBag.ddlRooms = new SelectList(db.tbRooms.OrderBy(c => c.sRoomName), "sRoomName", "sRoomName");
             ViewBag.ddlChairs = new SelectList(db.tbRooms.OrderBy(c => c.iRoomChairs), "iRoomChairs", "iRoomChairs");
@@ -56,8 +56,8 @@ namespace Group5ScrumProject.Controllers
                 //             select m).Where(c => c.iRoomChairs == ddlChairs || c.sRoomName == ddlRooms.ToString() || c.sRoomName == searchString).Distinct();
 
                 List<Room> rooms = (from f in db.tbRooms
-                                         where f.sRoomName == ddlRooms
-                                         select new Room(f)).ToList();
+                                    where f.sRoomName == ddlRooms
+                                    select new Room(f)).ToList();
 
                 ViewBag.Rooms = rooms;
                 return View("Index", getRooms());
@@ -555,21 +555,23 @@ namespace Group5ScrumProject.Controllers
             db.SubmitChanges();
 
             //Skickar mail till användaren med bokningsbekräftelse
-            BookingConfirmationMessage(u, newBooking);
+            SendMessage(u.iUserId, "Bokningsbekräftelse", "Hej " + u.sUserName + ". \n Du har bokat projektrum " + newBooking.iRumId + ". \nDatum: " + newBooking.dtDateDay.ToString("yyyy/MM/dd") + ".\n Starttid: " + newBooking.dtTimeStart.ToString("hh\\:mm")
+                  + ". \nSluttid: " + newBooking.dtTimeEnd.ToString("hh\\:mm") + ". \nGlöm inte att checka in senast 2 timmar innan bokningen startar.");
             Session["bookingConfirmed"] = "Bokning genomförd";
         }
 
         //Metod som skickar bokningsbekräftelse till användaren
-        public void BookingConfirmationMessage(tbUser user, tbBooking booking)
+        public void SendMessage(int id, string subject, string messageBody)
         {
+            tbUser u = db.tbUsers.Where(x => x.iUserId == id)
+                .FirstOrDefault();
             try
             {
                 System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
-                message.To.Add(user.Email);
-                message.Subject = "Bokningsbekräftelse";
+                message.To.Add(u.Email);
+                message.Subject = subject;
                 message.From = new System.Net.Mail.MailAddress("teknikhogskolangroup5@gmail.com");
-                message.Body = "Hej " + user.sUserName + ". \n Du har bokat projektrum " + booking.iRumId + ". \nDatum: " + booking.dtDateDay.ToString("yyyy/MM/dd") + ".\n Starttid: " + booking.dtTimeStart.ToString("hh\\:mm")
-                  + ". \nSluttid: " + booking.dtTimeEnd.ToString("hh\\:mm") + ". \nGlöm inte att checka in senast 2 timmar innan bokningen startar.";
+                message.Body = messageBody;
                 System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient("smtp.gmail.com", 587);
                 smtp.Credentials = new System.Net.NetworkCredential("teknikhogskolangroup5", "losenordgrupp5");
 
@@ -606,20 +608,24 @@ namespace Group5ScrumProject.Controllers
         }
 
         [HttpPost]
-        public ActionResult AdminBookingDelete(string id)
+        public ActionResult AdminBookingDelete(int id)
         {
             var bookingsAll = db.tbBookings;
             ViewBag.Bookings = bookingsAll;
 
             try
             {
-
                 var bookings = db.tbBookings
-                    .Where(b => b.iBookingID == int.Parse(id))
+                    .Where(b => b.iBookingID == id)
                     .FirstOrDefault();
+
+                tbUser u = db.tbUsers.Where(x => x.iUserId == bookings.iUserId).FirstOrDefault();
+
+                SendMessage(u.iUserId, "Bokning borttagen", "Hej " + u.sUserName + ". \nDin bokning har blivit borttagen. Kontakta administratören.");
 
                 db.tbBookings.DeleteOnSubmit(bookings);
                 db.SubmitChanges();
+
                 return View("AdminViewSettings");
 
             }
@@ -754,19 +760,7 @@ namespace Group5ScrumProject.Controllers
         [HttpPost]
         public ActionResult SendEmail(int id, string subject, string messageToUser)
         {
-            tbUser u = db.tbUsers.Where(x => x.iUserId == id)
-                .FirstOrDefault();
-
-            System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
-            message.To.Add(u.Email);
-            message.Subject = subject;
-            message.From = new System.Net.Mail.MailAddress("teknikhogskolangroup5@gmail.com");
-            message.Body = messageToUser;
-            System.Net.Mail.SmtpClient smtp = new System.Net.Mail.SmtpClient("smtp.gmail.com", 587);
-            smtp.Credentials = new System.Net.NetworkCredential("teknikhogskolangroup5", "losenordgrupp5");
-
-            smtp.EnableSsl = true;
-            smtp.Send(message);
+            SendMessage(id, subject, messageToUser);
 
             return RedirectToAction("AdminUserEdit");
         }
