@@ -16,24 +16,6 @@ namespace Group5ScrumProject.Controllers
     {
         DataClasses1DataContext db = new DataClasses1DataContext();
 
-        public ActionResult Search(string searchString = "", int ddlChairs = 0, string ddlRooms = "")
-        {
-
-            ViewBag.ddlRooms = new SelectList(db.tbRooms.OrderBy(c => c.sRoomName), "sRoomName", "sRoomName");
-            ViewBag.ddlChairs = new SelectList(db.tbRooms.OrderBy(c => c.iRoomChairs), "iRoomChairs", "iRoomChairs");
-
-            var rooms = (from m in db.tbRooms
-                         join s in db.tbBookings
-                         on m.iRoomId equals s.iRumId
-                         select m).Where(c => c.iRoomChairs == ddlChairs || c.sRoomName == ddlRooms.ToString() || c.sRoomName == searchString).Distinct();
-
-            if (Request.IsAjaxRequest())
-            {
-                return PartialView("Index", rooms);
-            }
-            return View(rooms);
-        }
-
         public ActionResult Index(DateTime? day, int ddlChairs = 0, string ddlRooms = "")
         {
             if (Session["User"] == null)
@@ -45,14 +27,19 @@ namespace Group5ScrumProject.Controllers
             ViewBag.ddlRooms = new SelectList(db.tbRooms.OrderBy(c => c.sRoomName), "sRoomName", "sRoomName");
             ViewBag.ddlChairs = new SelectList(db.tbRooms.OrderBy(c => c.iRoomChairs), "iRoomChairs", "iRoomChairs");
 
-
             if (day == null)
             {
                 ViewBag.Date = DateTime.Now;
+                ViewBag.StringDate = DateTime.Today.ToString("yyyy/MM/dd");
             }
             else
+            {
                 ViewBag.Date = day;
-
+                string stringDay = day.ToString();
+                stringDay = stringDay.Remove(stringDay.Length - 8);
+                ViewBag.StringDate = stringDay;
+            }
+            
             ViewBag.nrOfRows = 5;
             ViewBag.Rooms = getRooms();
 
