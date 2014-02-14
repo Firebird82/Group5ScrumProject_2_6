@@ -44,7 +44,7 @@ namespace Group5ScrumProject.Controllers
             ViewBag.nrOfRows = 5;
             ViewBag.Rooms = getRooms();
 
-            if (ddlRooms != "")
+            if (ddlRooms != "" || ddlChairs != 0)
             {
                 List<Room> rooms = (from f in db.tbRooms
                                     where f.sRoomName == ddlRooms || f.iRoomChairs == ddlChairs
