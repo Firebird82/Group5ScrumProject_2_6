@@ -600,7 +600,7 @@ namespace Group5ScrumProject.Controllers
         }
 
         [HttpPost]
-        public ActionResult AdminBookingDelete(int id)
+        public ActionResult AdminBookingDelete(int id = 0)
         {
             var bookingsAll = db.tbBookings;
             ViewBag.Bookings = bookingsAll;
@@ -619,12 +619,12 @@ namespace Group5ScrumProject.Controllers
                 db.tbBookings.DeleteOnSubmit(bookings);
                 db.SubmitChanges();
 
-                return RedirectToAction("AdminBookingDelete");
+                return View("AdminViewSettings");
 
             }
-            catch (Exception)
+            catch
             {
-                return View("AdminBookingDelete");
+                return View("AdminViewSettings");
             }
         }
         [HttpGet]
