@@ -7,19 +7,14 @@
 
 <h2>Bokningar</h2>
 
-
-
-<p> Dina Bokningar: </p>@Model.sUserName
+<p>Dina Bokningar: </p>@Model.sUserName
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
      
-    
     <fieldset>
         <legend>Bokning</legend>
-
-
         <table>
             @{
                 foreach (tbBooking a in ViewBag.Bokningar)
@@ -39,10 +34,11 @@
         </table>
     </fieldset>
     <p>
-     <input type="submit" value="Delete" /> |
-        @Html.ActionLink("Back to List", "Index")
-        </p>
+        <input type="submit" value="Ta bort" />
+        |
+        @Html.ActionLink("Tillbaka", "Index")
+    </p>
 }
 
-   
-       
+
+
