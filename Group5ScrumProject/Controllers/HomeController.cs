@@ -683,7 +683,7 @@ namespace Group5ScrumProject.Controllers
             }
         }
 
-        public ActionResult UploadFile(string Submit) //David
+        public ActionResult UploadFile(string Submit) 
         {
             int loops = 0;
 
