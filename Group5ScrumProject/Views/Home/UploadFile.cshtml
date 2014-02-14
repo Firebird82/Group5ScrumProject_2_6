@@ -2,11 +2,11 @@
     ViewBag.Title = "UploadFile";
 }
 
-<h2>UploadFile</h2>
+<h2>Ladda upp fil</h2>
 
 <form action="UploadFile" method="post" enctype="multipart/form-data">
-  <input type="file" name="FileUpload1" /><br />
-  <input type="submit" name="Submit" id="Submit" value="Upload" />
+  <input type="file" value="Välj fil" name="FileUpload1" /><br />
+  <input type="submit" name="Submit" id="Submit" value="Ladda upp" />
   <br />
   @ViewBag.Message
 </form>
