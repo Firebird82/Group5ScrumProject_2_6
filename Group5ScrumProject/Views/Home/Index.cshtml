@@ -12,7 +12,7 @@
     Html.RenderAction("Login");
 }
 Välkommen @user.sUserName - @user.sUserRole
-@if (user.sUserRole == "User")
+@if (user.sUserRole == "User"|| user.sUserRole == "Teacher")
 {
     
     @Html.ActionLink("Dina bokningar", "UserBookings");
