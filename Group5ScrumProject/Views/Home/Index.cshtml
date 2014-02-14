@@ -2,7 +2,7 @@
 @using Group5ScrumProject.Models
 @model List<Group5ScrumProject.Models.Room>
 
-<div class="Content"
+<div class="Content">
 @{
     User user = new User((tbUser)ViewBag.User);
     WebGrid grid = new WebGrid(Model, rowsPerPage: ViewBag.nrOfRows);
@@ -12,7 +12,8 @@
 {
     Html.RenderAction("Login");
 }
-
+   </div>
+<div class="Content">
 Välkommen @user.sUserName - @user.sUserRole
 
 @if (user.sUserRole == "User"|| user.sUserRole == "Teacher")
@@ -25,7 +26,7 @@ Välkommen @user.sUserName - @user.sUserRole
 {
     <br />
     <a href="AdminViewSettings">
-        <input id="btnAdmin" type="button" value="Admin inställningar" />
+        <input id="btnAdmin" type="button" value="Admin inställningar" width:200/>
     </a>
 }
 <br/>
@@ -78,6 +79,7 @@ Välkommen @user.sUserName - @user.sUserRole
         </tbody>
     </table>
     <br />
+ 
     }
 }
     </div>
