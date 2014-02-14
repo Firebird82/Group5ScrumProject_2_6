@@ -639,14 +639,12 @@ namespace Group5ScrumProject.Controllers
             tbUser u = (tbUser)Session["User"];
 
             ViewBag.Bokningar = (from f in db.tbBookings
-                                 where f.iUserId == u.iUserId
+                                 where f.iUserId == u.iUserId && f.dtDateDay.DayOfYear >= DateTime.Today.DayOfYear
                                  select f).ToList();
 
             var användare = (from f in db.tbUsers
                              where f.iUserId == u.iUserId
                              select f).FirstOrDefault();
-
-
 
             return View("UserBookings", new User(användare));
         }
@@ -657,15 +655,12 @@ namespace Group5ScrumProject.Controllers
             tbUser u = (tbUser)Session["User"];
 
             var bookingsAll = (from f in db.tbBookings
-                               where f.iUserId == u.iUserId
+                               where f.iUserId == u.iUserId && f.dtDateDay.DayOfYear >= DateTime.Today.DayOfYear
                                select f).ToList();
             ViewBag.Bokningar = bookingsAll;
 
             try
             {
-
-
-
                 var användare = (from f in db.tbUsers
                                  where f.iUserId == u.iUserId
                                  select f).FirstOrDefault();
@@ -676,19 +671,11 @@ namespace Group5ScrumProject.Controllers
 
                 db.tbBookings.DeleteOnSubmit(bookings);
                 db.SubmitChanges();
-                return View("UserBookings", new User(användare));
-
-
+                return RedirectToAction("UserBookings");
             }
-            catch (Exception)
+            catch
             {
-                tbUser g = (tbUser)Session["User"];
-
-                var användare = (from f in db.tbUsers
-                                 where f.iUserId == g.iUserId
-                                 select f).FirstOrDefault();
-
-                return View("UserBookings", new User(användare));
+                return RedirectToAction("UserBookings");
             }
         }
 
