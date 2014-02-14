@@ -11,6 +11,10 @@
 {
     Html.RenderAction("Login");
 }
+
+
+<a href="Logout"> <input id="Button1" type="button" value="Logga ut" /> </a>
+
 Välkommen @user.sUserName - @user.sUserRole
 @if (user.sUserRole == "User"|| user.sUserRole == "Teacher")
 {
