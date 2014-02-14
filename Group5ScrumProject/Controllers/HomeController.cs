@@ -589,7 +589,8 @@ namespace Group5ScrumProject.Controllers
             try
             {
                 List<Booking> bookings = db.tbBookings.Select(f => new Booking(f)).ToList();
-
+                ModelState.AddModelError(string.Empty, (string)Session["ErrorMessage"]);
+                Session["ErrorMessage"] = "";
                 return View(bookings);
             }
             catch
@@ -614,10 +615,11 @@ namespace Group5ScrumProject.Controllers
 
                 SendMessage(u.iUserId, "Bokning borttagen", "Hej " + u.sUserName + ". \nDin bokning har blivit borttagen. Kontakta administratören.");
 
+                Session["ErrorMessage"] = "Bokningen är borttagen och mail har skickats till användaren.";
                 db.tbBookings.DeleteOnSubmit(bookings);
                 db.SubmitChanges();
 
-                return View("AdminViewSettings");
+                return RedirectToAction("AdminBookingDelete");
 
             }
             catch (Exception)
@@ -752,8 +754,9 @@ namespace Group5ScrumProject.Controllers
         public ActionResult SendEmail(int id, string subject, string messageToUser)
         {
             SendMessage(id, subject, messageToUser);
+            ModelState.AddModelError(string.Empty, "Meddelande skickat!");
 
-            return RedirectToAction("AdminUserEdit");
+            return View();
         }
 
         public ActionResult AdminBookingHistories()

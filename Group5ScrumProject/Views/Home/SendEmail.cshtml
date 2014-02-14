@@ -4,6 +4,7 @@
 
 @using (Html.BeginForm())
 {
+    @Html.ValidationSummary()
     @Html.HiddenFor(modelitem => Model.iUserId)
 
     <fieldset>
