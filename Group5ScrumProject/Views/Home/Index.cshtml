@@ -31,11 +31,12 @@ Välkommen @user.sUserName - @user.sUserRole
 
 @using (Html.BeginForm())
 { 
-    <input type="submit" value="Sök" />
+
       
     @Html.DropDownList("ddlRooms", "Välj rum")
     @Html.DropDownList("ddlChairs", "Antal stolar")
     <input data-val="true" value="@ViewBag.Date" name="day" type="date" />
+    <input type="submit" value="Sök" />
 }
 
 @{ // http://mvc-tutorials.com/asp-net-mvc-webgrid-with-paging-sorting-edit-and-delete-commands
