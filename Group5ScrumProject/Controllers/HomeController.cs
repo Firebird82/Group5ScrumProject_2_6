@@ -40,7 +40,7 @@ namespace Group5ScrumProject.Controllers
                 stringDay = stringDay.Remove(stringDay.Length - 8);
                 ViewBag.StringDate = stringDay;
             }
-            
+
             ViewBag.nrOfRows = 5;
             ViewBag.Rooms = getRooms();
 
@@ -253,7 +253,7 @@ namespace Group5ScrumProject.Controllers
         private List<Room> getRooms()
         {
             List<Room> rooms = new List<Room>();
-                db.tbRooms.ToList().ForEach(room => { rooms.Add(new Room(room)); });
+            db.tbRooms.ToList().ForEach(room => { rooms.Add(new Room(room)); });
 
             //rooms = (from f in db.tbRooms
             //         select new Room(f)).ToList();
@@ -434,11 +434,13 @@ namespace Group5ScrumProject.Controllers
 
             if (Session["bookingConfirmed"] == null || (string)Session["bookingConfirmed"] == "")
             {
-                ViewBag.BookingMessage = Session["ErrorMessage"];
+
+                ModelState.AddModelError(string.Empty, (string)Session["ErrorMessage"]);
+                Session["ErrorMessage"] = "";
             }
             else
             {
-                ViewBag.BookingMessage = "Bokning genomförd";
+                ModelState.AddModelError(string.Empty, "Bokning genomförd");
                 Session["bookingConfirmed"] = "";
                 Session["ErrorMessage"] = "";
             }
@@ -611,7 +613,7 @@ namespace Group5ScrumProject.Controllers
                 tbUser u = db.tbUsers.Where(x => x.iUserId == bookings.iUserId).FirstOrDefault();
 
                 SendMessage(u.iUserId, "Bokning borttagen", "Hej " + u.sUserName + ". \nDin bokning har blivit borttagen. Kontakta administratören.");
-                
+
                 db.tbBookings.DeleteOnSubmit(bookings);
                 db.SubmitChanges();
 
@@ -684,7 +686,7 @@ namespace Group5ScrumProject.Controllers
             }
         }
 
-        public ActionResult UploadFile(string Submit) 
+        public ActionResult UploadFile(string Submit)
         {
             int loops = 0;
 
