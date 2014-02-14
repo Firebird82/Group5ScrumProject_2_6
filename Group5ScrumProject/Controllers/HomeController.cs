@@ -650,13 +650,17 @@ namespace Group5ScrumProject.Controllers
         [HttpPost]
         public ActionResult UserBookings(string id)
         {
-            var bookingsAll = db.tbBookings;
+            tbUser u = (tbUser)Session["User"];
+
+            var bookingsAll = (from f in db.tbBookings
+                               where f.iUserId == u.iUserId
+                               select f).ToList();
             ViewBag.Bokningar = bookingsAll;
 
             try
             {
 
-                tbUser u = (tbUser)Session["User"];
+
 
                 var användare = (from f in db.tbUsers
                                  where f.iUserId == u.iUserId
@@ -674,10 +678,10 @@ namespace Group5ScrumProject.Controllers
             }
             catch (Exception)
             {
-                tbUser u = (tbUser)Session["User"];
+                tbUser g = (tbUser)Session["User"];
 
                 var användare = (from f in db.tbUsers
-                                 where f.iUserId == u.iUserId
+                                 where f.iUserId == g.iUserId
                                  select f).FirstOrDefault();
 
                 return View("UserBookings", new User(användare));
