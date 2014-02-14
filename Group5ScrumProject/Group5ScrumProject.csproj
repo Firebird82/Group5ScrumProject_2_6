@@ -183,7 +183,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Filters\HomeController.cs" />
     <Compile Include="DataClasses1.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -320,7 +320,6 @@
     <Content Include="Views\Home\AdminUserDelete.cshtml" />
     <Content Include="Views\Home\AdminUserBlock.cshtml" />
     <Content Include="Views\Home\AdminBookingAdd.cshtml" />
-    <Content Include="Views\Home\AdminBookDelete.cshtml" />
     <Content Include="Views\Home\AdminBookingEdit.cshtml" />
     <Content Include="Views\Home\AdminBookingDelete.cshtml" />
     <Content Include="Views\Home\UploadFile.cshtml" />
@@ -335,6 +334,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

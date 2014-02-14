@@ -6,10 +6,11 @@
 
 <form action="UploadFile" method="post" enctype="multipart/form-data">
   <input type="file" value="Välj fil" name="FileUpload1" /><br />
+    <br />
   <input type="submit" name="Submit" id="Submit" value="Ladda upp" />
   <br />
   @ViewBag.Message
 </form>
-
+    <br />
 @Html.ActionLink("Tillbaka", "AdminViewSettings")
  </div>
