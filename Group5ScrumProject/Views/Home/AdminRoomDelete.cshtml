@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = "AdminRoomDelete";
 }
-
+<div class="Content">
 <h2>Ta bort rum</h2>
 @using (Html.BeginForm("AdminRoomDelete", "Home", FormMethod.Post))
 {    
@@ -28,3 +28,5 @@
     <br /><br />
 }
 @Html.ActionLink("Tillbaka","AdminViewSettings")
+
+    </div>

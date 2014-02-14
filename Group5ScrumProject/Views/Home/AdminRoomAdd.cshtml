@@ -11,7 +11,9 @@
 @{
     ViewBag.Title = "Lägg till rum";
 }
+<div class="Content">
 @{  // Något meddelande till användaren ?
+    
     if (ViewBag.message)
     {
         @:<h2>@ViewBag.status</h2>
@@ -53,4 +55,4 @@ Rumsbeskrivning @Html.TextBox("Rumsbeskrivning")
 <br/>
 @Html.ActionLink("Tillbaka", "AdminViewSettings")
 
-
+    </div>

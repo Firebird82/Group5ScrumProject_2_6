@@ -8,6 +8,7 @@
 
 @using (Html.BeginForm("AdminUserDelete", "Home", FormMethod.Post))
 {
+    <div class="Content">
     <h2>Ta bort användare</h2>
 
     <table>
@@ -30,6 +31,6 @@
     <br />
     <br />
     @Html.ActionLink("Tillbaka", "AdminViewSettings")
-
+   </div>
 
 }

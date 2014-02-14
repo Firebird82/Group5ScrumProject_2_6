@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Editera användare";
 }
-
+<div class="Content">
 <h2>Editera användare</h2>
 @using (Ajax.BeginForm(
 
@@ -24,3 +24,4 @@
     @Html.Partial("_UsersEdit", Model)
 </div> <br />
  @Html.ActionLink("Tillbaka", "AdminViewSettings")
+    </div>
