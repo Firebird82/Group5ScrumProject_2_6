@@ -3,7 +3,7 @@
 @{
     ViewBag.Title = "AdminBookingDelete";
 }
-
+<div class="Content">
 <h2>Ta bort bokning</h2>
 @using (Html.BeginForm("AdminBookingDelete", "Home", FormMethod.Post))
 {    
@@ -33,3 +33,4 @@
 
 
 @Html.ActionLink("Tillbaka", "AdminViewSettings")
+    </div>
