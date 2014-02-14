@@ -74,6 +74,12 @@ namespace Group5ScrumProject.Controllers
             //Om det finns en befintlig användare i databasen
             if (loggedInUser != null)
             {
+                if (loggedInUser.iBlocked == 1)
+                {
+                    ViewBag.Message = "Du är SPÄRRAD";
+                    return View("Login");
+                }
+
                 Session["User"] = loggedInUser;
                 return RedirectToAction("Index");
             }
