@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Web;
 using System.Web.UI.WebControls;
 using System.Web.Mvc;
+using System.Web.UI.WebControls.WebParts;
 using Group5ScrumProject.Models;
 using Group5ScrumProject;
 using System.IO;
@@ -755,20 +756,29 @@ namespace Group5ScrumProject.Controllers
 
         public ActionResult AdminBookingHistories()
         {
-
-            ViewBag.users = new SelectList(db.tbUsers, "iUserId", "sUserName");
-
-            ViewBag.nrOfRows = db.tbRooms.Count(); // Skickar med antal rader till webgrid
             return View("AdminBookingHistories");
         }
 
-        public ActionResult _AdminBookingHistories(string id)
+        public ActionResult _AdminBookingHistoriesddl()
+        {
+            var users = new SelectList(db.tbUsers, "iUserId", "sUserName").ToList();
+            users.Insert(0, new SelectListItem());
+            users[0].Value = "0";
+            users[0].Text = "Användare";
+            ViewBag.users = users;
+            ViewBag.nrOfRows = db.tbRooms.Count(); // Skickar med antal rader till webgrid
+            return View("_AdminBookingHistoriesddl");
+        }
+
+        public ActionResult _AdminBookingHistoriesWebGrid(string id)
         {
             List<BookingHistory> history =
                 db.tbBookings.Where(c => c.iUserId == int.Parse(id)).Select(x => new BookingHistory(x)).ToList();
 
+            if (history.Count <= 0)
+                return View("AdminBookingHistoriesNoResult");
             ViewBag.nrOfRows = history.Count; // Skickar med antal rader till webgrid
-            return View("_AdminBookingHistories", history);
+            return View("_AdminBookingHistoriesWebGrid", history);
         }
     }
 }

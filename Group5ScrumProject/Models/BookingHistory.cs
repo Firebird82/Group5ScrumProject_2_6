@@ -21,11 +21,7 @@ namespace Group5ScrumProject.Models
             BookingRoomName = ((from f in db.tbRooms
                                 where f.iRoomId == booking.iRumId
                                 select f.sRoomName).FirstOrDefault()).ToString();
-
-
         }
-
-
 
         public int BookingId { get; set; }
         public string BookingByName { get; set; }
