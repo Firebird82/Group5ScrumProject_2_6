@@ -12,10 +12,7 @@
     Html.RenderAction("Login");
 }
 
-
-<a href="Logout"> <input id="Button1" type="button" value="Logga ut" /> </a> <br />
-
-Välkommen @user.sUserName - @user.sUserRole
+Välkommen @user.sUserName - @user.sUserRole <br/>
 @if (user.sUserRole == "User"|| user.sUserRole == "Teacher")
 {
     
@@ -26,8 +23,11 @@ Välkommen @user.sUserName - @user.sUserRole
 {
     <br />
     <a href="AdminViewSettings">
-        <input id="btnAdmin" type="button" value="Admin inställningar" /></a>
+        <input id="btnAdmin" type="button" value="Admin inställningar" />
+    </a>
 }
+<br/>
+<a href="Login"> <input id="Button1" type="button" value="Logga ut" /> </a> <br /><br/>
 
 @using (Html.BeginForm())
 { 
