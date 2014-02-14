@@ -210,7 +210,7 @@ namespace Group5ScrumProject.Controllers
         }
 
         [HttpPost]
-        public ActionResult AdminUserDelete(int id)
+        public ActionResult AdminUserDelete(int id = 0)
         {
             try
             {
@@ -376,7 +376,7 @@ namespace Group5ScrumProject.Controllers
         }
 
         [HttpPost]
-        public ActionResult AdminRoomDelete(int id)
+        public ActionResult AdminRoomDelete(int id = 0)
         {
             var DeleteRooms = db.tbRooms;
             ViewBag.Rooms = DeleteRooms;
